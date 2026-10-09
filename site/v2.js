@@ -63,15 +63,14 @@ function renderPredictions(prediction) {
   const meta = [["分析日期",prediction.analysis_date || "—"],["预测日期",prediction.prediction_date || "—"],["涨停总数",prediction.market?.zt_count ?? "—"],["最高板",prediction.market?.max_board ? prediction.market.max_board + " 板" : "—"]];
   document.getElementById("v2PredictionMeta").innerHTML = meta.map(([label,value]) =>
     '<div class="market-item"><div class="name">' + esc(label) + '</div><div class="value">' + esc(value) + '</div></div>').join("");
-  const intradayMode = "盘中实时行情快照（成交量按交易时长估算）";
-  if (prediction.analysis_mode !== intradayMode) {
-    const mode = esc(prediction.analysis_mode || "旧结果/未标记");
-    document.getElementById("v2PredictionCards").innerHTML =
-      '<article class="card"><div class="block-title">当前没有有效的盘中交易信号</div>' +
-      '<div class="block-text muted">页面保存的数据标记为“' + mode + '”，不是当日盘中快照，因此不展示为可执行候选。盘前、午休或盘后运行不会产生新的买入清单；请在下一次 A 股交易时段运行盘中扫描。</div></article>';
-    return;
-  }
-  document.getElementById("v2PredictionCards").innerHTML = ["1","2","3","4","5","6"].map(level => {
+  const mode = prediction.analysis_mode || "旧结果/未标记";
+  const isLiveIntraday = mode === "盘中最新行情快照（成交量按交易时长估算）";
+  const runAt = esc(prediction.run_at || "时间未知");
+  const modeNote = isLiveIntraday ? "" :
+    '<article class="card"><div class="block-title">当前展示最近一次运行结果</div>' +
+    '<div class="block-text muted">运行模式：' + esc(mode) + '；运行时间：' + runAt +
+    '。本次结果按运行当时能够获取的最新行情计算，并不保证现在仍可成交。准备买入前请重新运行，并确认股票当前所处板级、是否一字板及盘口是否允许成交。</div></article>';
+  document.getElementById("v2PredictionCards").innerHTML = modeNote + ["1","2","3","4","5","6"].map(level => {
     const items = prediction.levels?.[level] || [];
     const body = items.length ? items.map((r,i) =>
       '<div class="v2-row"><div><strong>TOP ' + (i+1) + '</strong> ' + esc(r.name) + ' <span class="code">' + esc(r.code) + '</span>' +
