@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Standalone V2 daily scanner.
+"""Standalone V2 daily/intraday scanner.
 
-This helper intentionally reuses the same feature construction and scoring
-logic as scripts/multi_tier_v2_backtest.py, so manual scans cannot drift from
-the V2 model definition.
+This helper reuses model feature construction and scoring. During market hours
+it overlays today's live quote snapshot on completed daily bars, predicts the
+next trading day, and keeps the incomplete bar out of backtest labels. It is
+intended for fast manual runs without retraining historical models.
 """
 from __future__ import annotations
 
