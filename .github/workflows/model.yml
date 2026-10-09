@@ -2,6 +2,15 @@ name: V2 多级连板模型训练与独立网页发布
 
 on:
   workflow_dispatch:
+    inputs:
+      mode:
+        description: "盘中快速扫描，或完整重训和回测"
+        type: choice
+        options:
+          - scan_only
+          - full_backtest
+        default: scan_only
+        required: true
   push:
     paths:
       - "scripts/multi_tier_v2_backtest.py"
@@ -9,7 +18,6 @@ on:
       - "scripts/market_data_sina.py"
       - "scripts/trading_calendar.py"
       - "config/trading_calendar.json"
-      - ".github/workflows/model.yml"
   schedule:
     # 15:20 Asia/Shanghai = 07:20 UTC, weekdays
     - cron: "20 7 * * 1-5"
@@ -19,17 +27,13 @@ permissions:
   pages: write
   id-token: write
 
-concurrency:
-  group: v2-independent-pages
-  cancel-in-progress: false
-
 jobs:
-  model_and_publish:
+  model_and_data:
     runs-on: ubuntu-latest
     timeout-minutes: 40
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: v2-model-compute
+      cancel-in-progress: false
     steps:
       - name: Checkout V2 repository
         uses: actions/checkout@v6
@@ -51,7 +55,12 @@ jobs:
         run: python -m pip install --disable-pip-version-check scikit-learn
 
       - name: Train V2 models and generate historical OOS backtest
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.mode == 'full_backtest' }}
         run: python scripts/multi_tier_v2_backtest.py
+
+      - name: Run fast V2 scan with the saved models
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'scan_only' }}
+        run: python scripts/multi_tier_scan.py
 
       - name: Validate generated outputs and stage standalone website data
         run: |
@@ -78,8 +87,11 @@ jobs:
               json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
           Path("site/data/multi_tier_latest.json").write_text(
               json.dumps(latest, ensure_ascii=False, indent=2), encoding="utf-8")
-          print("Validated V2 model/report/prediction and staged site data:",
-                latest.get("analysis_date"), "->", latest.get("prediction_date"))
+          print(
+              "Validated V2 model/report/prediction:",
+              latest.get("analysis_date"), "->", latest.get("prediction_date"),
+              "| mode:", latest.get("analysis_mode", "legacy")
+          )
           PY
 
       - name: Commit model, backtest, candidates and website data
@@ -89,10 +101,37 @@ jobs:
           git add -f config/models_v2.json reports/multi_tier_v2_backtest.json reports/multi_tier_v2_samples.csv data/multi_tier_latest.json site/data/multi_tier_v2_backtest.json site/data/multi_tier_latest.json
           if ! git diff --cached --quiet; then
             git commit -m "data: refresh independent V2 model and website"
+            git pull --rebase origin main
             git push
           else
             echo "V2 outputs have no content changes."
           fi
+
+  deploy_site:
+    needs: model_and_data
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: v2-independent-pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout latest V2 repository state
+        uses: actions/checkout@v6
+
+      - name: Validate published V2 data
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path("site/data/multi_tier_v2_backtest.json").read_text(encoding="utf-8"))
+          latest = json.loads(Path("site/data/multi_tier_latest.json").read_text(encoding="utf-8"))
+          assert isinstance(report.get("levels"), dict), "Missing tier metrics"
+          assert latest.get("model_version") == "multi-tier-v2", "Latest result is not V2"
+          print("Website will publish:", latest.get("analysis_date"), "->", latest.get("prediction_date"), "|", latest.get("analysis_mode", "legacy"))
+          PY
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
