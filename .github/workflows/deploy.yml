@@ -18,7 +18,7 @@ permissions:
 
 concurrency:
   group: v2-independent-pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy_site:
