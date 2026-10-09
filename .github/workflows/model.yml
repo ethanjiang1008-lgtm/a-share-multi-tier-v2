@@ -55,11 +55,11 @@ jobs:
         run: python -m pip install --disable-pip-version-check scikit-learn
 
       - name: Train V2 models and generate historical OOS backtest
-        if: ${{ github.event_name != 'workflow_dispatch' || inputs.mode == 'full_backtest' }}
+        if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'full_backtest') || (github.event_name == 'push' && (contains(github.event.head_commit.modified, 'scripts/multi_tier_v2_backtest.py') || contains(github.event.head_commit.added, 'scripts/multi_tier_v2_backtest.py') || contains(github.event.head_commit.modified, 'scripts/market_data_sina.py') || contains(github.event.head_commit.added, 'scripts/market_data_sina.py') || contains(github.event.head_commit.modified, 'scripts/trading_calendar.py') || contains(github.event.head_commit.added, 'scripts/trading_calendar.py') || contains(github.event.head_commit.modified, 'config/trading_calendar.json') || contains(github.event.head_commit.added, 'config/trading_calendar.json'))) }}
         run: python scripts/multi_tier_v2_backtest.py
 
       - name: Run fast V2 scan with the saved models
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'scan_only' }}
+        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'scan_only') || (github.event_name == 'push' && !(contains(github.event.head_commit.modified, 'scripts/multi_tier_v2_backtest.py') || contains(github.event.head_commit.added, 'scripts/multi_tier_v2_backtest.py') || contains(github.event.head_commit.modified, 'scripts/market_data_sina.py') || contains(github.event.head_commit.added, 'scripts/market_data_sina.py') || contains(github.event.head_commit.modified, 'scripts/trading_calendar.py') || contains(github.event.head_commit.added, 'scripts/trading_calendar.py') || contains(github.event.head_commit.modified, 'config/trading_calendar.json') || contains(github.event.head_commit.added, 'config/trading_calendar.json'))) }}
         run: python scripts/multi_tier_scan.py
 
       - name: Validate generated outputs and stage standalone website data
