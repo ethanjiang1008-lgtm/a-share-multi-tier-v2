@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import csv, datetime, json, math, statistics
+import argparse, csv, datetime, json, math, statistics
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from collections import defaultdict
@@ -764,10 +764,29 @@ def build_today_prediction(stock_data, models, dates, market):
         if feat is None:
             continue
         p=_score_serialized(model,{"features":feat})
+        current=bars[i]
+        previous=bars[i-1]
+        prev_close=f(previous.get("close"))
+        open_price=f(current.get("open"))
+        high_price=f(current.get("high"))
+        low_price=f(current.get("low"))
+        close_price=f(current.get("close"))
+        range_pct=((high_price-low_price)/prev_close*100) if prev_close>0 else 99.0
+        open_ret=pct(open_price,prev_close) if prev_close>0 else 0.0
+        close_ret=pct(close_price,prev_close) if prev_close>0 else 0.0
+        suspected_one_word=(range_pct<=0.25 and open_ret>=9.0 and close_ret>=9.5)
+        entry_status=(
+            "疑似一字板：通常难以买入，禁止把信号当作可成交订单"
+            if suspected_one_word else
+            "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入"
+        )
         buckets[str(lv)].append({
             "rank":0,"level":lv,"code":code,"name":name,
-            "price":f(bars[i].get("close")),"score":p,
-            "prediction_date":pred_date
+            "price":close_price,"score":p,
+            "prediction_date":pred_date,
+            "entry_status":entry_status,
+            "suspected_one_word":suspected_one_word,
+            "intraday_range_pct":round(range_pct,3)
         })
 
     for k in buckets:
@@ -792,18 +811,14 @@ def build_today_prediction(stock_data, models, dates, market):
     }
 
 
-def choose_live_snapshot_mode(now, data_dates):
-    """Use realtime quotes during session; after close, fall back if Sina daily K-lines lag."""
-    today = now.date()
-    if not is_trading_day(today):
+def choose_live_snapshot_mode(now, data_dates=None):
+    """Return intraday mode only during actual A-share trading sessions."""
+    if not is_trading_day(now.date()):
         return None
     t = now.time()
-    if datetime.time(9, 30) <= t < datetime.time(15, 15):
-        return "intraday_snapshot"
-    latest = max(data_dates) if data_dates else None
-    if t >= datetime.time(15, 0) and (latest is None or latest < today):
-        return "closing_snapshot_fallback"
-    return None
+    morning = datetime.time(9, 30) <= t < datetime.time(11, 30)
+    afternoon = datetime.time(13, 0) <= t < datetime.time(15, 0)
+    return "intraday_snapshot" if morning or afternoon else None
 
 
 def _estimate_elapsed_trading_minutes(now):
@@ -865,7 +880,7 @@ def build_intraday_snapshot_stock_data(stock_data, quote_rows, snapshot_date, no
         result[str(code)] = (name, new_idx, new_bars)
     return result
 
-def main():
+def main(backtest_only=False):
     run_at=datetime.datetime.now(ZoneInfo("Asia/Shanghai"))
     quote_rows=fetch_all_stocks()
     universe={
@@ -969,7 +984,14 @@ def main():
         encoding="utf-8"
     )
 
-    if snapshot_mode:
+    today_prediction=None
+    latest_path=ROOT/"data"/"multi_tier_latest.json"
+    if backtest_only:
+        print("Backtest-only mode: daily prediction output intentionally skipped.")
+    elif snapshot_mode != "intraday_snapshot":
+        print("Outside A-share trading hours: prediction output intentionally skipped; existing latest prediction is preserved.")
+        results["prediction_skipped"]="outside_trading_hours"
+    else:
         prediction_stock_data=build_intraday_snapshot_stock_data(
             stock_data,quote_rows,run_at.date(),run_at
         )
@@ -978,32 +1000,19 @@ def main():
         today_prediction=build_today_prediction(
             prediction_stock_data,models,prediction_dates,prediction_market
         )
-    else:
-        prediction_stock_data=stock_data
-        today_prediction=build_today_prediction(stock_data,models,dates,market)
-    if today_prediction:
-        today_prediction["analysis_mode"]=(
-            "盘中实时行情快照（成交量按交易时长估算）"
-            if snapshot_mode=="intraday_snapshot"
-            else "收盘行情快照（新浪日K尚未更新）"
-            if snapshot_mode=="closing_snapshot_fallback"
-            else "收盘日K"
-        )
-        today_prediction["run_at"]=run_at.isoformat(timespec="seconds")
-        today_prediction["live_quote_count"]=(
-            len(prediction_stock_data) if snapshot_mode else None
-        )
-        today_prediction["source_latest_kline_date"]=(
-            max(all_dates).isoformat() if all_dates else None
-        )
-    latest_path=ROOT/"data"/"multi_tier_latest.json"
-    if today_prediction:
-        latest_path.parent.mkdir(parents=True,exist_ok=True)
-        latest_path.write_text(
-            json.dumps(today_prediction,ensure_ascii=False,indent=2),
-            encoding="utf-8"
-        )
-        results["today_prediction"]=today_prediction
+        if today_prediction:
+            today_prediction["analysis_mode"]="盘中实时行情快照（成交量按交易时长估算）"
+            today_prediction["run_at"]=run_at.isoformat(timespec="seconds")
+            today_prediction["live_quote_count"]=len(prediction_stock_data)
+            today_prediction["source_latest_kline_date"]=(
+                max(all_dates).isoformat() if all_dates else None
+            )
+            latest_path.parent.mkdir(parents=True,exist_ok=True)
+            latest_path.write_text(
+                json.dumps(today_prediction,ensure_ascii=False,indent=2),
+                encoding="utf-8"
+            )
+            results["today_prediction"]=today_prediction
 
     OUT_JSON.parent.mkdir(parents=True,exist_ok=True)
     OUT_JSON.write_text(
@@ -1023,4 +1032,11 @@ def main():
     print(json.dumps(results,ensure_ascii=False,indent=2))
 
 if __name__=="__main__":
-    raise SystemExit(main())
+    parser=argparse.ArgumentParser(description="V2 multi-tier model training/backtest")
+    parser.add_argument(
+        "--backtest-only",
+        action="store_true",
+        help="train/evaluate models without generating or changing the daily trading signal"
+    )
+    args=parser.parse_args()
+    raise SystemExit(main(backtest_only=args.backtest_only))
