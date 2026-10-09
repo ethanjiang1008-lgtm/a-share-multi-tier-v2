@@ -1,23 +1,25 @@
-name: V2 盘中扫描与次日晋级预测
+name: V2 运行时点快照与次交易日晋级预测
 
 on:
   workflow_dispatch:
   schedule:
-    # 14:30 Asia/Shanghai = 06:30 UTC; run during the afternoon session.
-    - cron: "30 6 * * 1-5"
+    # 14:00 Asia/Shanghai = 06:00 UTC; weekday automatic scan.
+    - cron: "0 6 * * 1-5"
 
 permissions:
   contents: write
   pages: write
   id-token: write
 
+# Prefer the most recently requested manual snapshot when runs overlap.
+concurrency:
+  group: v2-latest-signal
+  cancel-in-progress: true
+
 jobs:
   intraday_scan:
     runs-on: ubuntu-latest
     timeout-minutes: 25
-    concurrency:
-      group: v2-model-compute
-      cancel-in-progress: false
     steps:
       - name: Checkout V2 repository
         uses: actions/checkout@v6
@@ -41,43 +43,38 @@ jobs:
       - name: Generate same-day intraday candidates
         run: python scripts/multi_tier_scan.py
 
-      - name: Validate live session, analysis date and next-trading-day target
+      - name: Validate run snapshot and next-trading-day target
         run: |
           python - <<'PY'
-          import json
-          from datetime import datetime, date, time
+          import json, sys
+          from datetime import date
           from pathlib import Path
-          from zoneinfo import ZoneInfo
-          from scripts.trading_calendar import is_trading_day, next_trading_day
+          sys.path.insert(0, "scripts")
+          from trading_calendar import next_trading_day
 
-          now = datetime.now(ZoneInfo("Asia/Shanghai"))
-          if not is_trading_day(now.date()):
-              raise SystemExit("Refusing to publish: today is not an A-share trading day.")
-          in_session = (
-              time(9, 30) <= now.time() < time(11, 30)
-              or time(13, 0) <= now.time() < time(15, 0)
-          )
-          if not in_session:
-              raise SystemExit("Refusing to publish: this workflow may publish signals only during live A-share sessions.")
           payload = json.loads(Path("data/multi_tier_latest.json").read_text(encoding="utf-8"))
           if payload.get("status") != "ok":
-              raise SystemExit(f"Invalid live scan status: {payload.get('status')}")
+              raise SystemExit(f"Invalid V2 scan status: {payload.get('status')}")
           analysis = payload.get("analysis_date")
           predicted = payload.get("prediction_date")
-          if analysis != now.date().isoformat():
-              raise SystemExit(f"Stale analysis date: expected {now.date()}, got {analysis}")
-          expected = next_trading_day(now.date()).isoformat()
+          mode = payload.get("analysis_mode")
+          if not analysis or not predicted or not mode:
+              raise SystemExit("V2 output must include analysis date, prediction date and run mode.")
+          analysis_day = date.fromisoformat(analysis)
+          expected = next_trading_day(analysis_day).isoformat()
           if predicted != expected:
-              raise SystemExit(f"Wrong prediction horizon: expected {expected}, got {predicted}")
-          if payload.get("analysis_mode") != "盘中实时行情快照（成交量按交易时长估算）":
-              raise SystemExit("Refusing to publish a result without an intraday quote snapshot.")
-          if int(payload.get("live_quote_count") or 0) <= 0:
-              raise SystemExit("No usable live quote snapshot was assembled.")
+              raise SystemExit(f"Wrong prediction horizon: analysis={analysis}, expected next trading day={expected}, got={predicted}")
+          if not payload.get("run_at") or not payload.get("quote_snapshot_at"):
+              raise SystemExit("V2 output must record actual run time and quote-snapshot time.")
+          if mode in ("盘中实时行情快照（成交量按交易时长估算）", "盘后最新报价快照（日K尚未更新）"):
+              if int(payload.get("live_quote_count") or 0) <= 0:
+                  raise SystemExit("Quote-snapshot mode has no usable quote rows.")
           print(
-              "Live V2 scan validated:",
+              "V2 run snapshot validated:",
               analysis, "->", predicted,
-              "| run at", payload.get("run_at"),
-              "| quote stocks", payload.get("live_quote_count")
+              "| mode:", mode,
+              "| quote snapshot at", payload.get("quote_snapshot_at"),
+              "| stocks:", payload.get("live_quote_count")
           )
           PY
 
@@ -106,7 +103,7 @@ jobs:
     timeout-minutes: 10
     concurrency:
       group: v2-independent-pages
-      cancel-in-progress: false
+      cancel-in-progress: true
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -122,10 +119,10 @@ jobs:
           import json
           from pathlib import Path
           latest = json.loads(Path("site/data/multi_tier_latest.json").read_text(encoding="utf-8"))
-          assert latest.get("analysis_mode") == "盘中实时行情快照（成交量按交易时长估算）", "Page data is not an intraday snapshot"
-          assert latest.get("analysis_date") == latest.get("run_at", "")[:10], "Analysis date and run date differ"
-          assert latest.get("prediction_date"), "Missing next prediction date"
-          print("Publishing fresh intraday signal:", latest.get("analysis_date"), "->", latest.get("prediction_date"))
+          assert latest.get("analysis_mode"), "Missing run mode"
+          assert latest.get("run_at") and latest.get("quote_snapshot_at"), "Missing runtime timestamps"
+          assert latest.get("analysis_date") and latest.get("prediction_date"), "Missing date horizon"
+          print("Publishing latest run:", latest.get("analysis_date"), "->", latest.get("prediction_date"), "|", latest.get("analysis_mode"), "|", latest.get("run_at"))
           PY
 
       - name: Configure GitHub Pages
