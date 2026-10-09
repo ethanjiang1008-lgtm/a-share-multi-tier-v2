@@ -812,13 +812,22 @@ def build_today_prediction(stock_data, models, dates, market):
 
 
 def choose_live_snapshot_mode(now, data_dates=None):
-    """Return intraday mode only in trading hours; never treat after-hours data as a live signal."""
+    """Choose live quote snapshot when usable; return None when last completed daily bars are safer."""
     if not is_trading_day(now.date()):
         return None
     t = now.time()
-    morning = datetime.time(9, 30) <= t < datetime.time(11, 30)
-    afternoon = datetime.time(13, 0) <= t < datetime.time(15, 0)
-    return "intraday_snapshot" if morning or afternoon else None
+    # Includes the lunch break: no new trades arrive, but the latest quote snapshot
+    # remains today's most recent intraday information.
+    if datetime.time(9, 30) <= t < datetime.time(15, 0):
+        return "intraday_snapshot"
+    latest = max(data_dates) if data_dates else None
+    # After the close, if Sina's daily K-line has not caught up, use the latest
+    # quote endpoint values as today's closing snapshot instead of yesterday.
+    if t >= datetime.time(15, 0) and (latest is None or latest < now.date()):
+        return "closing_quote_snapshot"
+    # Before the open, or when today's completed daily K-line is already present,
+    # use the latest daily K-line data available at the moment of the run.
+    return None
 
 
 def _estimate_elapsed_trading_minutes(now):
