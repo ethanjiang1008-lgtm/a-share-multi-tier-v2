@@ -23,8 +23,9 @@
 
 ## 独立运行机制
 
-- `.github/workflows/model.yml`：每个交易日北京时间约 15:20 执行历史回测、更新模型和当日预测，并直接部署 V2 网页；也支持手动运行。
-- `.github/workflows/deploy.yml`：仅在网页 HTML/CSS/JS 变更时做轻量静态部署，不从 V1 仓库同步模型或数据。
+- `.github/workflows/intraday-scan.yml`：工作日北京时间 14:30 盘中扫描并发布次一交易日晋级信号；手动运行也会检查是否处于交易时段，盘前、午休、盘后拒绝生成/发布交易信号。
+- `.github/workflows/model.yml`：仅训练模型和更新历史回测，不生成或覆盖当日交易信号；代码变更时可自动验证/重训，也支持手动运行。
+- `.github/workflows/deploy.yml`：在网页前端或历史回测展示数据变更时独立部署 V2 页面。
 - V2 的代码、配置、模型、样本和回测均保存在本仓库：
   - `scripts/multi_tier_v2_backtest.py`
   - `scripts/multi_tier_scan.py`
