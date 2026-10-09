@@ -1,39 +1,25 @@
-name: V2 多级连板模型训练与独立网页发布
+name: V2 历史回测与模型训练（不发布当日信号）
 
 on:
   workflow_dispatch:
-    inputs:
-      mode:
-        description: "盘中快速扫描，或完整重训和回测"
-        type: choice
-        options:
-          - scan_only
-          - full_backtest
-        default: scan_only
-        required: true
   push:
     paths:
       - "scripts/multi_tier_v2_backtest.py"
-      - "scripts/multi_tier_scan.py"
       - "scripts/market_data_sina.py"
       - "scripts/trading_calendar.py"
       - "config/trading_calendar.json"
-  schedule:
-    # 15:20 Asia/Shanghai = 07:20 UTC, weekdays
-    - cron: "20 7 * * 1-5"
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
+
+concurrency:
+  group: v2-model-compute
+  cancel-in-progress: false
 
 jobs:
-  model_and_data:
+  model_backtest:
     runs-on: ubuntu-latest
     timeout-minutes: 40
-    concurrency:
-      group: v2-model-compute
-      cancel-in-progress: false
     steps:
       - name: Checkout V2 repository
         uses: actions/checkout@v6
@@ -54,93 +40,31 @@ jobs:
       - name: Install model dependency
         run: python -m pip install --disable-pip-version-check scikit-learn
 
-      - name: Train V2 models and generate historical OOS backtest
-        if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'full_backtest') || (github.event_name == 'push' && (contains(github.event.head_commit.modified, 'scripts/multi_tier_v2_backtest.py') || contains(github.event.head_commit.added, 'scripts/multi_tier_v2_backtest.py') || contains(github.event.head_commit.modified, 'scripts/market_data_sina.py') || contains(github.event.head_commit.added, 'scripts/market_data_sina.py') || contains(github.event.head_commit.modified, 'scripts/trading_calendar.py') || contains(github.event.head_commit.added, 'scripts/trading_calendar.py') || contains(github.event.head_commit.modified, 'config/trading_calendar.json') || contains(github.event.head_commit.added, 'config/trading_calendar.json'))) }}
-        run: python scripts/multi_tier_v2_backtest.py
+      - name: Train models and backtest only
+        run: python scripts/multi_tier_v2_backtest.py --backtest-only
 
-      - name: Run fast V2 scan with the saved models
-        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.mode == 'scan_only') || (github.event_name == 'push' && !(contains(github.event.head_commit.modified, 'scripts/multi_tier_v2_backtest.py') || contains(github.event.head_commit.added, 'scripts/multi_tier_v2_backtest.py') || contains(github.event.head_commit.modified, 'scripts/market_data_sina.py') || contains(github.event.head_commit.added, 'scripts/market_data_sina.py') || contains(github.event.head_commit.modified, 'scripts/trading_calendar.py') || contains(github.event.head_commit.added, 'scripts/trading_calendar.py') || contains(github.event.head_commit.modified, 'config/trading_calendar.json') || contains(github.event.head_commit.added, 'config/trading_calendar.json'))) }}
-        run: python scripts/multi_tier_scan.py
-
-      - name: Validate generated outputs and stage standalone website data
+      - name: Validate V2 training outputs
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          report_path = Path("reports/multi_tier_v2_backtest.json")
-          model_path = Path("config/models_v2.json")
-          latest_path = Path("data/multi_tier_latest.json")
-          for p in (report_path, model_path, latest_path):
-              if not p.exists():
-                  raise SystemExit(f"Missing expected V2 output: {p}")
-          report = json.loads(report_path.read_text(encoding="utf-8"))
-          models = json.loads(model_path.read_text(encoding="utf-8"))
-          latest = json.loads(latest_path.read_text(encoding="utf-8"))
-          if not isinstance(report.get("levels"), dict) or not report["levels"]:
-              raise SystemExit("V2 backtest report contains no tier results")
-          if latest.get("model_version") != "multi-tier-v2":
-              raise SystemExit("Latest prediction does not identify as V2")
-          if not isinstance(models, dict):
-              raise SystemExit("V2 model output is not a JSON object")
-          Path("site/data").mkdir(parents=True, exist_ok=True)
-          Path("site/data/multi_tier_v2_backtest.json").write_text(
-              json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
-          Path("site/data/multi_tier_latest.json").write_text(
-              json.dumps(latest, ensure_ascii=False, indent=2), encoding="utf-8")
-          print(
-              "Validated V2 model/report/prediction:",
-              latest.get("analysis_date"), "->", latest.get("prediction_date"),
-              "| mode:", latest.get("analysis_mode", "legacy")
-          )
+          report = json.loads(Path("reports/multi_tier_v2_backtest.json").read_text(encoding="utf-8"))
+          models = json.loads(Path("config/models_v2.json").read_text(encoding="utf-8"))
+          assert isinstance(report.get("levels"), dict) and report["levels"], "Missing tier metrics"
+          assert isinstance(models, dict), "Invalid model JSON"
+          assert Path("reports/multi_tier_v2_samples.csv").exists(), "Missing sample CSV"
+          print("V2 training/backtest artifacts validated. No daily trading signal was generated.")
           PY
 
-      - name: Commit model, backtest, candidates and website data
+      - name: Commit models and backtest reports only
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f config/models_v2.json reports/multi_tier_v2_backtest.json reports/multi_tier_v2_samples.csv data/multi_tier_latest.json site/data/multi_tier_v2_backtest.json site/data/multi_tier_latest.json
+          git add -f config/models_v2.json reports/multi_tier_v2_backtest.json reports/multi_tier_v2_samples.csv
           if ! git diff --cached --quiet; then
-            git commit -m "data: refresh independent V2 model and website"
+            git commit -m "data: refresh V2 model and OOS backtest"
             git pull --rebase origin main
             git push
           else
-            echo "V2 outputs have no content changes."
+            echo "V2 training outputs have no content changes."
           fi
-
-  deploy_site:
-    needs: model_and_data
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    concurrency:
-      group: v2-independent-pages
-      cancel-in-progress: false
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Checkout latest V2 repository state
-        uses: actions/checkout@v6
-
-      - name: Validate published V2 data
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          report = json.loads(Path("site/data/multi_tier_v2_backtest.json").read_text(encoding="utf-8"))
-          latest = json.loads(Path("site/data/multi_tier_latest.json").read_text(encoding="utf-8"))
-          assert isinstance(report.get("levels"), dict), "Missing tier metrics"
-          assert latest.get("model_version") == "multi-tier-v2", "Latest result is not V2"
-          print("Website will publish:", latest.get("analysis_date"), "->", latest.get("prediction_date"), "|", latest.get("analysis_mode", "legacy"))
-          PY
-
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload only the V2 website
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: "./site"
-
-      - name: Deploy the independent V2 website
-        id: deployment
-        uses: actions/deploy-pages@v4
