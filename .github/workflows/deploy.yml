@@ -8,6 +8,7 @@ on:
       - "site/index.html"
       - "site/v2.js"
       - "site/styles.css"
+      - "site/data/multi_tier_v2_backtest.json"
       - ".github/workflows/deploy.yml"
 
 permissions:
