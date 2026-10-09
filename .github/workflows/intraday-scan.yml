@@ -20,6 +20,8 @@ jobs:
   intraday_scan:
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    outputs:
+      publish: ${{ steps.run_gate.outputs.publish }}
     steps:
       - name: Checkout V2 repository
         uses: actions/checkout@v6
@@ -40,10 +42,32 @@ jobs:
       - name: Install V2 scoring dependency
         run: python -m pip install --disable-pip-version-check scikit-learn
 
-      - name: Generate same-day intraday candidates
+      - name: Gate automatic run against A-share trading calendar (manual runs always allowed)
+        id: run_gate
+        shell: bash
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import os, sys
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          sys.path.insert(0, "scripts")
+          from trading_calendar import is_trading_day
+          now = datetime.now(ZoneInfo("Asia/Shanghai"))
+          event = os.environ.get("GITHUB_EVENT_NAME", "")
+          publish = event != "schedule" or is_trading_day(now.date())
+          print("publish=" + ("true" if publish else "false"))
+          if not publish:
+              print(f"Scheduled scan skipped: {now.date()} is not an A-share trading day.")
+          else:
+              print(f"Run allowed: event={event}, Beijing time={now.isoformat(timespec='seconds')}")
+          PY
+
+      - name: Generate latest available candidates
+        if: steps.run_gate.outputs.publish == 'true'
         run: python scripts/multi_tier_scan.py
 
       - name: Validate run snapshot and next-trading-day target
+        if: steps.run_gate.outputs.publish == 'true'
         run: |
           python - <<'PY'
           import json, sys
@@ -79,12 +103,14 @@ jobs:
           PY
 
       - name: Sync latest prediction and backtest data into website folder
+        if: steps.run_gate.outputs.publish == 'true'
         run: |
           mkdir -p site/data
           cp data/multi_tier_latest.json site/data/multi_tier_latest.json
           cp reports/multi_tier_v2_backtest.json site/data/multi_tier_v2_backtest.json
 
-      - name: Commit intraday signal and website data
+      - name: Commit latest run and website data
+        if: steps.run_gate.outputs.publish == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -99,6 +125,7 @@ jobs:
 
   deploy_site:
     needs: intraday_scan
+    if: needs.intraday_scan.outputs.publish == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     concurrency:
