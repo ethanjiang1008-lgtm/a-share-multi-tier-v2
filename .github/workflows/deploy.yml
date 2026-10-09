@@ -1,4 +1,4 @@
-name: V2 独立网页发布
+name: V2 独立网页静态发布
 
 on:
   workflow_dispatch:
@@ -9,73 +9,43 @@ on:
       - "site/v2.js"
       - "site/styles.css"
       - ".github/workflows/deploy.yml"
-  schedule:
-    # 16:00 Asia/Shanghai = 08:00 UTC; the upstream V2 model run is scheduled for 15:20 China time.
-    - cron: "0 8 * * 1-5"
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
 concurrency:
   group: v2-independent-pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
-  sync_and_deploy:
+  deploy_site:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout V2 website repository
+      - name: Checkout V2 repository
         uses: actions/checkout@v6
-
-      - name: Sync latest V2 outputs from model repository
-        shell: bash
+      - name: Validate checked-in V2 data
         run: |
-          set -euo pipefail
-          mkdir -p site/data
-          curl --fail --silent --show-error --location --retry 5 --retry-delay 5 --retry-all-errors \
-            https://raw.githubusercontent.com/ethanjiang1008-lgtm/a-share-one-to-two-picker/main/reports/multi_tier_v2_backtest.json \
-            -o site/data/multi_tier_v2_backtest.json
-          curl --fail --silent --show-error --location --retry 5 --retry-delay 5 --retry-all-errors \
-            https://raw.githubusercontent.com/ethanjiang1008-lgtm/a-share-one-to-two-picker/main/docs/data/multi_tier_latest.json \
-            -o site/data/multi_tier_latest.json
           python - <<'PY'
           import json
           from pathlib import Path
-          backtest = json.loads(Path("site/data/multi_tier_v2_backtest.json").read_text(encoding="utf-8"))
+          report = json.loads(Path("site/data/multi_tier_v2_backtest.json").read_text(encoding="utf-8"))
           latest = json.loads(Path("site/data/multi_tier_latest.json").read_text(encoding="utf-8"))
-          if not isinstance(backtest.get("levels"), dict):
-              raise SystemExit("V2 backtest report has no levels object")
-          if latest.get("model_version") != "multi-tier-v2":
-              raise SystemExit("Synced latest result is not marked as multi-tier-v2")
-          print("Validated V2 web data:", backtest.get("train_end"), latest.get("analysis_date"), "->", latest.get("prediction_date"))
+          assert isinstance(report.get("levels"), dict), "Missing level metrics"
+          assert latest.get("model_version") == "multi-tier-v2", "Latest prediction is not V2"
+          print("V2 website data is valid.")
           PY
-
-      - name: Commit refreshed website data if changed
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add site/data/multi_tier_v2_backtest.json site/data/multi_tier_latest.json
-          if ! git diff --cached --quiet; then
-            git commit -m "data: refresh V2 website results"
-            git push
-          else
-            echo "V2 website data is already up to date."
-          fi
-
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
-
-      - name: Upload V2 site artifact
+      - name: Upload V2 website artifact
         uses: actions/upload-pages-artifact@v4
         with:
           path: "./site"
-
-      - name: Deploy only the V2 website
+      - name: Deploy independent V2 website
         id: deployment
         uses: actions/deploy-pages@v4
