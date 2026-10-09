@@ -14,7 +14,7 @@ permissions:
 
 concurrency:
   group: v2-model-compute
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   model_backtest:
