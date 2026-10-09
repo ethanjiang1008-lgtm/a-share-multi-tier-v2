@@ -812,7 +812,7 @@ def build_today_prediction(stock_data, models, dates, market):
 
 
 def choose_live_snapshot_mode(now, data_dates=None):
-    """Return intraday mode only during actual A-share trading sessions."""
+    """Return intraday mode only in trading hours; never treat after-hours data as a live signal."""
     if not is_trading_day(now.date()):
         return None
     t = now.time()
