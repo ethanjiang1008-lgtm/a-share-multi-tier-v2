@@ -1,0 +1,139 @@
+name: V2 盘中扫描与次日晋级预测
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 14:30 Asia/Shanghai = 06:30 UTC; run during the afternoon session.
+    - cron: "30 6 * * 1-5"
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  intraday_scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    concurrency:
+      group: v2-model-compute
+      cancel-in-progress: false
+    steps:
+      - name: Checkout V2 repository
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Syntax check scan and model utilities
+        run: |
+          python -m py_compile \
+            scripts/multi_tier_scan.py \
+            scripts/multi_tier_v2_backtest.py \
+            scripts/market_data_sina.py \
+            scripts/trading_calendar.py
+
+      - name: Install V2 scoring dependency
+        run: python -m pip install --disable-pip-version-check scikit-learn
+
+      - name: Generate same-day intraday candidates
+        run: python scripts/multi_tier_scan.py
+
+      - name: Validate live session, analysis date and next-trading-day target
+        run: |
+          python - <<'PY'
+          import json
+          from datetime import datetime, date, time
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+          from scripts.trading_calendar import is_trading_day, next_trading_day
+
+          now = datetime.now(ZoneInfo("Asia/Shanghai"))
+          if not is_trading_day(now.date()):
+              raise SystemExit("Refusing to publish: today is not an A-share trading day.")
+          in_session = (
+              time(9, 30) <= now.time() < time(11, 30)
+              or time(13, 0) <= now.time() < time(15, 0)
+          )
+          if not in_session:
+              raise SystemExit("Refusing to publish: this workflow may publish signals only during live A-share sessions.")
+          payload = json.loads(Path("data/multi_tier_latest.json").read_text(encoding="utf-8"))
+          if payload.get("status") != "ok":
+              raise SystemExit(f"Invalid live scan status: {payload.get('status')}")
+          analysis = payload.get("analysis_date")
+          predicted = payload.get("prediction_date")
+          if analysis != now.date().isoformat():
+              raise SystemExit(f"Stale analysis date: expected {now.date()}, got {analysis}")
+          expected = next_trading_day(now.date()).isoformat()
+          if predicted != expected:
+              raise SystemExit(f"Wrong prediction horizon: expected {expected}, got {predicted}")
+          if payload.get("analysis_mode") != "盘中实时行情快照（成交量按交易时长估算）":
+              raise SystemExit("Refusing to publish a result without an intraday quote snapshot.")
+          if int(payload.get("live_quote_count") or 0) <= 0:
+              raise SystemExit("No usable live quote snapshot was assembled.")
+          print(
+              "Live V2 scan validated:",
+              analysis, "->", predicted,
+              "| run at", payload.get("run_at"),
+              "| quote stocks", payload.get("live_quote_count")
+          )
+          PY
+
+      - name: Sync latest prediction and backtest data into website folder
+        run: |
+          mkdir -p site/data
+          cp data/multi_tier_latest.json site/data/multi_tier_latest.json
+          cp reports/multi_tier_v2_backtest.json site/data/multi_tier_v2_backtest.json
+
+      - name: Commit intraday signal and website data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f data/multi_tier_latest.json site/data/multi_tier_latest.json site/data/multi_tier_v2_backtest.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: publish intraday V2 signal for next trading day"
+            git pull --rebase origin main
+            git push
+          else
+            echo "Current intraday V2 result is unchanged."
+          fi
+
+  deploy_site:
+    needs: intraday_scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: v2-independent-pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout latest V2 repository state
+        uses: actions/checkout@v6
+
+      - name: Validate signal freshness before publishing
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          latest = json.loads(Path("site/data/multi_tier_latest.json").read_text(encoding="utf-8"))
+          assert latest.get("analysis_mode") == "盘中实时行情快照（成交量按交易时长估算）", "Page data is not an intraday snapshot"
+          assert latest.get("analysis_date") == latest.get("run_at", "")[:10], "Analysis date and run date differ"
+          assert latest.get("prediction_date"), "Missing next prediction date"
+          print("Publishing fresh intraday signal:", latest.get("analysis_date"), "->", latest.get("prediction_date"))
+          PY
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload V2 site artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: "./site"
+
+      - name: Deploy independent V2 site
+        id: deployment
+        uses: actions/deploy-pages@v4
