@@ -16,9 +16,9 @@ function renderStatus(report, prediction) {
     ["最近分析日", prediction.analysis_date || "—"],
     ["下一预测日", prediction.prediction_date || "—"],
     ["运行模式", prediction.analysis_mode || "旧结果/未标记"],
-    ["运行时间", runAt],
+    ["行情快照时间（北京时间）", runAt],
     ["日K最新日期", prediction.source_latest_kline_date || "—"],
-    ["实时快照股票数", prediction.live_quote_count ?? "—"]
+    ["报价快照股票数", prediction.live_quote_count ?? "—"]
   ];
   document.getElementById("v2Status").innerHTML = fields.map(([label, value]) =>
     '<div><span class="label">' + esc(label) + '</span><strong>' + esc(value) + '</strong></div>').join("");
