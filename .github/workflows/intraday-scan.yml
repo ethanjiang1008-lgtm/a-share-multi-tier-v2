@@ -66,7 +66,7 @@ jobs:
               raise SystemExit(f"Wrong prediction horizon: analysis={analysis}, expected next trading day={expected}, got={predicted}")
           if not payload.get("run_at") or not payload.get("quote_snapshot_at"):
               raise SystemExit("V2 output must record actual run time and quote-snapshot time.")
-          if mode in ("盘中实时行情快照（成交量按交易时长估算）", "盘后最新报价快照（日K尚未更新）"):
+          if mode in ("盘中最新行情快照（成交量按交易时长估算）", "盘后最新报价快照（日K尚未更新）"):
               if int(payload.get("live_quote_count") or 0) <= 0:
                   raise SystemExit("Quote-snapshot mode has no usable quote rows.")
           print(
