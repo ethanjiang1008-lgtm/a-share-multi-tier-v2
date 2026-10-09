@@ -9,7 +9,17 @@ function metricPct(level, key) {
   return v === null || v === undefined ? "—" : fmtPct(v);
 }
 function renderStatus(report, prediction) {
-  const fields = [["训练截止", report.train_end || "—"],["样本外起始", report.oos_start || "—"],["最近分析日", prediction.analysis_date || "—"],["下一预测日", prediction.prediction_date || "—"]];
+  const runAt = prediction.run_at ? String(prediction.run_at).replace("T", " ").slice(0, 19) : "—";
+  const fields = [
+    ["训练截止", report.train_end || "—"],
+    ["样本外起始", report.oos_start || "—"],
+    ["最近分析日", prediction.analysis_date || "—"],
+    ["下一预测日", prediction.prediction_date || "—"],
+    ["运行模式", prediction.analysis_mode || "旧结果/未标记"],
+    ["运行时间", runAt],
+    ["日K最新日期", prediction.source_latest_kline_date || "—"],
+    ["实时快照股票数", prediction.live_quote_count ?? "—"]
+  ];
   document.getElementById("v2Status").innerHTML = fields.map(([label, value]) =>
     '<div><span class="label">' + esc(label) + '</span><strong>' + esc(value) + '</strong></div>').join("");
 }
