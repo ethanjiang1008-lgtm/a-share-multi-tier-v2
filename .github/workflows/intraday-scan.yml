@@ -113,6 +113,8 @@ jobs:
     steps:
       - name: Checkout latest V2 repository state
         uses: actions/checkout@v6
+        with:
+          ref: main
 
       - name: Validate signal freshness before publishing
         run: |
