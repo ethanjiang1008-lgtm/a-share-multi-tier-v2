@@ -67,7 +67,8 @@ function renderPredictions(prediction) {
     const items = prediction.levels?.[level] || [];
     const body = items.length ? items.map((r,i) =>
       '<div class="v2-row"><div><strong>TOP ' + (i+1) + '</strong> ' + esc(r.name) + ' <span class="code">' + esc(r.code) + '</span>' +
-      '<div class="muted">价格：' + (Number.isFinite(Number(r.price)) ? Number(r.price).toFixed(2) : "—") + ' · 排名评分</div></div><strong>' + fmtPct(r.score) + '</strong></div>').join("") :
+      '<div class="muted">价格：' + (Number.isFinite(Number(r.price)) ? Number(r.price).toFixed(2) : "—") + ' · 排名评分</div>' +
+      '<div class="muted">入场提示：' + esc(r.entry_status || "盘口未验证；不保证能够成交") + '</div></div><strong>' + fmtPct(r.score) + '</strong></div>').join("") :
       '<div class="block-text muted">本次没有可用候选。</div>';
     return '<article class="card"><div class="section-head" style="margin:0 0 12px"><div><div class="eyebrow">LEVEL ' + level + '</div><h3>' + esc(TIER_LABELS[level]) + '</h3></div><div class="hint">' + items.length + ' 个候选</div></div>' + body + '</article>';
   }).join("");
