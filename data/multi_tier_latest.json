@@ -19,7 +19,10 @@
         "name": "新华文轩",
         "price": 20.91,
         "score": 0.5214078063203611,
-        "prediction_date": "2026-10-12"
+        "prediction_date": "2026-10-12",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 14.308
       },
       {
         "rank": 2,
@@ -28,7 +31,10 @@
         "name": "贝瑞基因",
         "price": 11.3,
         "score": 0.5198013642870216,
-        "prediction_date": "2026-10-12"
+        "prediction_date": "2026-10-12",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 15.482
       },
       {
         "rank": 3,
@@ -37,7 +43,10 @@
         "name": "东亚药业",
         "price": 28.29,
         "score": 0.5126449792600383,
-        "prediction_date": "2026-10-12"
+        "prediction_date": "2026-10-12",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 12.247
       },
       {
         "rank": 4,
@@ -46,7 +55,10 @@
         "name": "中新赛克",
         "price": 28.55,
         "score": 0.4987532261274204,
-        "prediction_date": "2026-10-12"
+        "prediction_date": "2026-10-12",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 15.53
       },
       {
         "rank": 5,
@@ -55,7 +67,10 @@
         "name": "吉视传媒",
         "price": 2.5,
         "score": 0.49426387117942744,
-        "prediction_date": "2026-10-12"
+        "prediction_date": "2026-10-12",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 11.894
       },
       {
         "rank": 6,
@@ -64,7 +79,10 @@
         "name": "澳弘电子",
         "price": 53.35,
         "score": 0.4937419787371438,
-        "prediction_date": "2026-10-12"
+        "prediction_date": "2026-10-12",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 12.845
       },
       {
         "rank": 7,
@@ -73,7 +91,10 @@
         "name": "华建集团",
         "price": 18.02,
         "score": 0.4886919031256828,
-        "prediction_date": "2026-10-12"
+        "prediction_date": "2026-10-12",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 11.844
       },
       {
         "rank": 8,
@@ -82,7 +103,10 @@
         "name": "金健米业",
         "price": 15.18,
         "score": 0.4868277135365078,
-        "prediction_date": "2026-10-12"
+        "prediction_date": "2026-10-12",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 12.899
       },
       {
         "rank": 9,
@@ -91,7 +115,10 @@
         "name": "新经典",
         "price": 17.33,
         "score": 0.4836568576144723,
-        "prediction_date": "2026-10-12"
+        "prediction_date": "2026-10-12",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 13.397
       },
       {
         "rank": 10,
@@ -100,7 +127,10 @@
         "name": "国芳集团",
         "price": 14.94,
         "score": 0.4832333877651072,
-        "prediction_date": "2026-10-12"
+        "prediction_date": "2026-10-12",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 11.119
       }
     ],
     "2": [
@@ -111,7 +141,10 @@
         "name": "雄韬股份",
         "price": 20.78,
         "score": 0.5901960650862869,
-        "prediction_date": "2026-10-12"
+        "prediction_date": "2026-10-12",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 3.282
       },
       {
         "rank": 2,
@@ -120,7 +153,10 @@
         "name": "丰元股份",
         "price": 19.44,
         "score": 0.5722758447719881,
-        "prediction_date": "2026-10-12"
+        "prediction_date": "2026-10-12",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 4.98
       },
       {
         "rank": 3,
@@ -129,7 +165,10 @@
         "name": "楚环科技",
         "price": 22.72,
         "score": 0.5383347996293166,
-        "prediction_date": "2026-10-12"
+        "prediction_date": "2026-10-12",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 6.877
       },
       {
         "rank": 4,
@@ -138,7 +177,10 @@
         "name": "华北制药",
         "price": 6.03,
         "score": 0.5383000338826656,
-        "prediction_date": "2026-10-12"
+        "prediction_date": "2026-10-12",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 8.212
       },
       {
         "rank": 5,
@@ -147,7 +189,10 @@
         "name": "安泰集团",
         "price": 3.78,
         "score": 0.48141822912374643,
-        "prediction_date": "2026-10-12"
+        "prediction_date": "2026-10-12",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 13.663
       },
       {
         "rank": 6,
@@ -156,7 +201,10 @@
         "name": "红豆股份",
         "price": 3.98,
         "score": 0.47583378689271166,
-        "prediction_date": "2026-10-12"
+        "prediction_date": "2026-10-12",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 9.392
       },
       {
         "rank": 7,
@@ -165,7 +213,10 @@
         "name": "三柏硕",
         "price": 14.86,
         "score": 0.46972218049621345,
-        "prediction_date": "2026-10-12"
+        "prediction_date": "2026-10-12",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 5.033
       }
     ],
     "3": [],
@@ -177,7 +228,10 @@
         "name": "紫竹高科",
         "price": 24.44,
         "score": 0.6150268615818992,
-        "prediction_date": "2026-10-12"
+        "prediction_date": "2026-10-12",
+        "entry_status": "疑似一字板：通常难以买入，禁止把信号当作可成交订单",
+        "suspected_one_word": true,
+        "intraday_range_pct": 0.0
       },
       {
         "rank": 2,
@@ -186,14 +240,18 @@
         "name": "上海洗霸",
         "price": 53.92,
         "score": 0.013768788133566443,
-        "prediction_date": "2026-10-12"
+        "prediction_date": "2026-10-12",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 13.453
       }
     ],
     "5": [],
     "6": []
   },
-  "analysis_mode": "收盘日K",
-  "run_at": "2026-10-09T18:43:42+08:00",
+  "analysis_mode": "盘后：当日已完成日K",
+  "run_at": "2026-10-09T19:16:17+08:00",
+  "quote_snapshot_at": "2026-10-09T19:16:17+08:00",
   "live_quote_count": null,
   "source_latest_kline_date": "2026-10-09",
   "failed": 8
