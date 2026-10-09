@@ -46,7 +46,7 @@ jobs:
         id: run_gate
         shell: bash
         run: |
-          python - <<'PY' >> "$GITHUB_OUTPUT"
+          python - <<'PY'
           import os, sys
           from datetime import datetime
           from zoneinfo import ZoneInfo
@@ -55,7 +55,8 @@ jobs:
           now = datetime.now(ZoneInfo("Asia/Shanghai"))
           event = os.environ.get("GITHUB_EVENT_NAME", "")
           publish = event != "schedule" or is_trading_day(now.date())
-          print("publish=" + ("true" if publish else "false"))
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
+              out.write("publish=" + ("true" if publish else "false") + "\n")
           if not publish:
               print(f"Scheduled scan skipped: {now.date()} is not an A-share trading day.")
           else:
