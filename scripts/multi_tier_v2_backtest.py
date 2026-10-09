@@ -5,8 +5,10 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from collections import defaultdict
 from sklearn.linear_model import LogisticRegression
+from zoneinfo import ZoneInfo
 
 from market_data_sina import fetch_all_stocks, fetch_kline, is_main_board
+from trading_calendar import is_trading_day
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT_JSON=ROOT/"reports"/"multi_tier_v2_backtest.json"
@@ -789,10 +791,86 @@ def build_today_prediction(stock_data, models, dates, market):
         "levels":buckets
     }
 
+
+def choose_live_snapshot_mode(now, data_dates):
+    """Use realtime quotes during session; after close, fall back if Sina daily K-lines lag."""
+    today = now.date()
+    if not is_trading_day(today):
+        return None
+    t = now.time()
+    if datetime.time(9, 30) <= t < datetime.time(15, 15):
+        return "intraday_snapshot"
+    latest = max(data_dates) if data_dates else None
+    if t >= datetime.time(15, 0) and (latest is None or latest < today):
+        return "closing_snapshot_fallback"
+    return None
+
+
+def _estimate_elapsed_trading_minutes(now):
+    """Estimate elapsed trading minutes for scaling partial-session volume."""
+    minute = now.hour * 60 + now.minute
+    if minute <= 9 * 60 + 30:
+        return 1
+    if minute < 11 * 60 + 30:
+        return max(1, minute - (9 * 60 + 30))
+    if minute < 13 * 60:
+        return 120
+    return min(240, max(120, 120 + minute - 13 * 60))
+
+
+def build_intraday_snapshot_stock_data(stock_data, quote_rows, snapshot_date, now):
+    """Create a prediction-only copy with a same-day live quote candle.
+
+    Historical training/backtest data is never changed by this function.
+    """
+    day = snapshot_date.isoformat()
+    quotes = {
+        str(q.get("code", "")).strip(): q
+        for q in quote_rows
+        if q.get("code") and is_main_board(str(q.get("code", "")), str(q.get("name", "")))
+    }
+    elapsed = _estimate_elapsed_trading_minutes(now)
+    volume_scale = min(4.0, max(1.0, 240.0 / elapsed))
+    result = {}
+    for code, (name, idx, bars) in stock_data.items():
+        q = quotes.get(str(code))
+        if not q:
+            continue
+        close = f(q.get("price"))
+        prev_bars = [b for b in bars if str(b.get("date", "")) < day]
+        if close <= 0 or len(prev_bars) < MIN_HISTORY:
+            continue
+        prev_close = f(prev_bars[-1].get("close"))
+        open_price = f(q.get("open")) or prev_close
+        high = f(q.get("high")) or max(open_price, close)
+        low = f(q.get("low")) or min(open_price, close)
+        if prev_close <= 0 or open_price <= 0 or high <= 0 or low <= 0:
+            continue
+        # Sina Market_Center volume is in lots; K-line volume is in shares.
+        # Estimate full-session volume from elapsed trading minutes to align
+        # volume features with the model's end-of-day training scale.
+        volume_shares = max(0.0, f(q.get("volume"))) * 100.0 * volume_scale
+        live_bar = {
+            "date": day,
+            "open": open_price,
+            "close": close,
+            "high": max(high, open_price, close),
+            "low": min(low, open_price, close),
+            "volume": volume_shares,
+            "amount": f(q.get("amount")),
+            "turnover": f(q.get("turnover_rate")),
+        }
+        new_bars = prev_bars + [live_bar]
+        new_idx = {str(b.get("date", "")): i for i, b in enumerate(new_bars)}
+        result[str(code)] = (name, new_idx, new_bars)
+    return result
+
 def main():
+    run_at=datetime.datetime.now(ZoneInfo("Asia/Shanghai"))
+    quote_rows=fetch_all_stocks()
     universe={
         str(x["code"]):str(x["name"])
-        for x in fetch_all_stocks()
+        for x in quote_rows
         if is_main_board(str(x.get("code","")),str(x.get("name","")))
         and x.get("code")
     }
@@ -813,12 +891,16 @@ def main():
             except Exception:
                 failed+=1
 
-    dates=sorted({
+    all_dates=sorted({
         datetime.date.fromisoformat(str(b["date"]))
         for _,_,bars in stock_data.values()
         for b in bars if b.get("date")
     })
-    dates=[d for d in dates if d<=datetime.date.today()]
+    all_dates=[d for d in all_dates if d<=run_at.date()]
+    snapshot_mode=choose_live_snapshot_mode(run_at,all_dates)
+    intraday_cutoff=(snapshot_mode=="intraday_snapshot")
+    # Do not label a prior day's sample with today's still-forming intraday candle.
+    dates=[d for d in all_dates if not (intraday_cutoff and d>=run_at.date())]
     market=market_states(stock_data,dates)
 
     samples_by_level=defaultdict(list)
@@ -887,7 +969,33 @@ def main():
         encoding="utf-8"
     )
 
-    today_prediction=build_today_prediction(stock_data,models,dates,market)
+    if snapshot_mode:
+        prediction_stock_data=build_intraday_snapshot_stock_data(
+            stock_data,quote_rows,run_at.date(),run_at
+        )
+        prediction_dates=sorted(set(dates)|{run_at.date()})
+        prediction_market=market_states(prediction_stock_data,prediction_dates)
+        today_prediction=build_today_prediction(
+            prediction_stock_data,models,prediction_dates,prediction_market
+        )
+    else:
+        prediction_stock_data=stock_data
+        today_prediction=build_today_prediction(stock_data,models,dates,market)
+    if today_prediction:
+        today_prediction["analysis_mode"]=(
+            "盘中实时行情快照（成交量按交易时长估算）"
+            if snapshot_mode=="intraday_snapshot"
+            else "收盘行情快照（新浪日K尚未更新）"
+            if snapshot_mode=="closing_snapshot_fallback"
+            else "收盘日K"
+        )
+        today_prediction["run_at"]=run_at.isoformat(timespec="seconds")
+        today_prediction["live_quote_count"]=(
+            len(prediction_stock_data) if snapshot_mode else None
+        )
+        today_prediction["source_latest_kline_date"]=(
+            max(all_dates).isoformat() if all_dates else None
+        )
     latest_path=ROOT/"data"/"multi_tier_latest.json"
     if today_prediction:
         latest_path.parent.mkdir(parents=True,exist_ok=True)
