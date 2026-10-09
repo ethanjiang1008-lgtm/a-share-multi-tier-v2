@@ -30,8 +30,26 @@ ROOT=Path(__file__).resolve().parents[1]
 MODEL_PATH=ROOT/"config"/"models_v2.json"
 OUT=ROOT/"data"/"multi_tier_latest.json"
 
+def ensure_intraday_session(now):
+    if not is_trading_day(now.date()):
+        raise SystemExit(
+            f"拒绝执行盘中预测：{now.date()} 不是 A 股交易日。"
+            "此次运行不会更改或发布已有预测结果。"
+        )
+    t=now.time()
+    morning=datetime.time(9,30) <= t < datetime.time(11,30)
+    afternoon=datetime.time(13,0) <= t < datetime.time(15,0)
+    if not (morning or afternoon):
+        raise SystemExit(
+            f"拒绝执行盘中预测：当前北京时间为 {now.isoformat(timespec='seconds')}。"
+            "本任务仅允许在 09:30–11:30 或 13:00–15:00 运行；"
+            "盘前、午休、盘后均不会生成或发布交易信号。"
+        )
+
+
 def main():
     run_at=datetime.datetime.now(ZoneInfo("Asia/Shanghai"))
+    ensure_intraday_session(run_at)
     quote_rows=fetch_all_stocks()
     universe={
         str(x["code"]):str(x["name"])
@@ -80,13 +98,7 @@ def main():
         prediction_stocks=stocks
         payload=build_today_prediction(stocks,models,dates,market)
     if payload:
-        payload["analysis_mode"]=(
-            "盘中实时行情快照（成交量按交易时长估算）"
-            if snapshot_mode=="intraday_snapshot"
-            else "收盘行情快照（新浪日K尚未更新）"
-            if snapshot_mode=="closing_snapshot_fallback"
-            else "收盘日K"
-        )
+        payload["analysis_mode"]="盘中实时行情快照（成交量按交易时长估算）"
         payload["run_at"]=run_at.isoformat(timespec="seconds")
         payload["live_quote_count"]=len(prediction_stocks) if snapshot_mode else None
         payload["source_latest_kline_date"]=max(all_dates).isoformat() if all_dates else None
