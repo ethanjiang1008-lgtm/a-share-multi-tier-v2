@@ -1,0 +1,18 @@
+{
+  "status": "pending",
+  "model_version": "first-board-to-third-v1",
+  "data_source": "Sina daily K-line",
+  "universe": "沪深主板；排除 ST、创业板、科创板、北交所",
+  "signal_definition": "分析日为首板日 T",
+  "entry_definition": {
+    "day": "T+1 开盘价（历史回测代理，不代表一定成交）",
+    "min_open_gap_pct": -2,
+    "max_open_gap_pct": 3,
+    "exclude_one_word_board": true
+  },
+  "target_definition": "观察 T+2 收盘时是否已连续晋级到三板及以上",
+  "train_end": "2026-07-08",
+  "oos_start": "2026-07-09",
+  "sample_n": 0,
+  "targets": {}
+}

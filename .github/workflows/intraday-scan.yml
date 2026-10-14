@@ -36,6 +36,7 @@ jobs:
           python -m py_compile \
             scripts/multi_tier_scan.py \
             scripts/multi_tier_v2_backtest.py \
+            scripts/first_to_third.py \
             scripts/market_data_sina.py \
             scripts/trading_calendar.py
 
@@ -109,13 +110,14 @@ jobs:
           mkdir -p site/data
           cp data/multi_tier_latest.json site/data/multi_tier_latest.json
           cp reports/multi_tier_v2_backtest.json site/data/multi_tier_v2_backtest.json
+          cp reports/first_to_third_backtest.json site/data/first_to_third_backtest.json
 
       - name: Commit latest run and website data
         if: steps.run_gate.outputs.publish == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f data/multi_tier_latest.json site/data/multi_tier_latest.json site/data/multi_tier_v2_backtest.json
+          git add -f data/multi_tier_latest.json site/data/multi_tier_latest.json site/data/multi_tier_v2_backtest.json site/data/first_to_third_backtest.json
           if ! git diff --cached --quiet; then
             git commit -m "data: publish intraday V2 signal for next trading day"
             git pull --rebase origin main

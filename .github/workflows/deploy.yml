@@ -9,6 +9,7 @@ on:
       - "site/v2.js"
       - "site/styles.css"
       - "site/data/multi_tier_v2_backtest.json"
+      - "site/data/first_to_third_backtest.json"
       - ".github/workflows/deploy.yml"
 
 permissions:
@@ -37,8 +38,10 @@ jobs:
           from pathlib import Path
           report = json.loads(Path("site/data/multi_tier_v2_backtest.json").read_text(encoding="utf-8"))
           latest = json.loads(Path("site/data/multi_tier_latest.json").read_text(encoding="utf-8"))
+          first_to_third = json.loads(Path("site/data/first_to_third_backtest.json").read_text(encoding="utf-8"))
           assert isinstance(report.get("levels"), dict), "Missing level metrics"
           assert latest.get("model_version") == "multi-tier-v2", "Latest prediction is not V2"
+          assert isinstance(first_to_third.get("targets"), dict), "Missing first-to-third report data"
           print("V2 website data is valid.")
           PY
       - name: Configure GitHub Pages

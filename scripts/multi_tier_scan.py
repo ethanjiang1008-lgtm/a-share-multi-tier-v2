@@ -13,7 +13,8 @@ import json
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from zoneinfo import ZoneInfo
-from trading_calendar import is_trading_day
+from trading_calendar import is_trading_day, next_trading_day
+from first_to_third import build_live_candidates as build_first_to_third_candidates
 
 from market_data_sina import fetch_all_stocks, fetch_kline, is_main_board
 from multi_tier_v2_backtest import (
@@ -24,10 +25,13 @@ from multi_tier_v2_backtest import (
     market_states,
     choose_live_snapshot_mode,
     build_intraday_snapshot_stock_data,
+    make_features,
+    board_level_for_day,
 )
 
 ROOT=Path(__file__).resolve().parents[1]
 MODEL_PATH=ROOT/"config"/"models_v2.json"
+FIRST_TO_THIRD_MODEL_PATH=ROOT/"config"/"first_to_third_model.json"
 OUT=ROOT/"data"/"multi_tier_latest.json"
 
 def main():
@@ -68,6 +72,8 @@ def main():
     dates=[d for d in all_dates if not (uses_quote_snapshot and d>=quote_snapshot_at.date())]
     market=market_states(stocks,dates)
     models=json.loads(MODEL_PATH.read_text(encoding="utf-8")) if MODEL_PATH.exists() else {}
+    first_to_third_models=(json.loads(FIRST_TO_THIRD_MODEL_PATH.read_text(encoding="utf-8"))
+                           if FIRST_TO_THIRD_MODEL_PATH.exists() else {})
     if uses_quote_snapshot:
         prediction_stocks=build_intraday_snapshot_stock_data(
             stocks,quote_rows,quote_snapshot_at.date(),quote_snapshot_at
@@ -79,8 +85,15 @@ def main():
         )
     else:
         prediction_stocks=stocks
+        prediction_dates=dates
+        prediction_market=market
         payload=build_today_prediction(stocks,models,dates,market)
     if payload:
+        payload["first_to_third"]=build_first_to_third_candidates(
+            prediction_stocks,prediction_dates,prediction_market,first_to_third_models,
+            make_features,board_level_for_day,payload["analysis_date"],
+            payload["prediction_date"],next_trading_day
+        )
         if snapshot_mode=="intraday_snapshot":
             payload["analysis_mode"]="盘中最新行情快照（成交量按交易时长估算）"
         elif snapshot_mode=="closing_quote_snapshot":

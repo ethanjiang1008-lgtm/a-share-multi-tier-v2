@@ -35,7 +35,7 @@
     <section class="table-wrap">
       <table class="v2-table">
         <thead><tr>
-          <th>板级</th><th>总样本</th><th>训练样本</th><th>样本外样本</th><th>样本外基准晋级率</th>
+          <th>板级</th><th>总样本</th><th>训练样本</th><th>样本外样本</th><th>Top1 随机选择基准</th>
           <th>Top1 命中率</th><th>Top2 命中率</th><th>Top3 命中率</th><th>Top1 每日命中率</th><th>AUC</th>
         </tr></thead>
         <tbody id="v2BacktestRows"><tr><td colspan="10">正在读取回测结果…</td></tr></tbody>
@@ -60,15 +60,36 @@
     <section id="v2PredictionMeta" class="market-grid"></section>
     <section id="v2PredictionCards" class="cards"></section>
 
+    <section class="section-head">
+      <div><div class="eyebrow">FIRST BOARD → THIRD BOARD+</div><h2>首板→三板及以上机会筛选</h2></div>
+      <div class="hint">新增独立模型：优先寻找连到三板及以上、且次日开盘条件相对可参与的首板股。</div>
+    </section>
+    <section id="firstToThirdMeta" class="market-grid"></section>
+    <section id="firstToThirdCards" class="cards"></section>
+    <section class="section-head">
+      <div><div class="eyebrow">OUT-OF-SAMPLE STRATEGY TEST</div><h2>首板→三板模型样本外回测</h2></div>
+      <div class="hint">按首板日排名；历史入场代理价为次日开盘价，须同时看可参与样本比例与收益。</div>
+    </section>
+    <section class="table-wrap">
+      <table class="v2-table">
+        <thead><tr>
+          <th>目标</th><th>样本量</th><th>样本外样本</th><th>样本外晋级率</th>
+          <th>Top1 命中 / 随机基准</th><th>Top2 命中 / 随机基准</th><th>Top3 命中 / 随机基准</th>
+          <th>Top1 可参与率</th><th>Top1 次日开盘至第三日收盘平均收益</th><th>AUC</th>
+        </tr></thead>
+        <tbody id="firstToThirdBacktestRows"><tr><td colspan="10">正在读取首板→三板回测…</td></tr></tbody>
+      </table>
+    </section>
+
     <section class="section-head"><div><div class="eyebrow">HOW TO READ</div><h2>结果说明</h2></div></section>
     <section class="card v2-explainer">
-      <p><strong>交易时点：</strong>当日候选只在 A 股交易时段内生成，目标是判断你在当日盘中仍有机会入场的当前板级股票，次一交易日能否继续晋级。盘后不会生成新的当日交易信号。</p>
-      <p><strong>买入可执行性：</strong>疑似一字板的股票通常难以排队买入；其他已触及涨停的股票也需要确认是否开板、盘口和实际成交。模型排名不等于一定买得进。</p>
-      <p><strong>样本外基准晋级率：</strong>该板级全部样本直接晋级的比例，用来判断模型是否优于不排序的基准。</p>
+      <p><strong>交易时点：</strong>当日候选按运行时点可获取的最新行情生成，目标是预测下一交易日晋级。周末或盘前运行可能使用最近已完成交易日的数据。</p>
+      <p><strong>买入可执行性：</strong>首板→三板模块把次日开盘相对首板日收盘价在 -2% 至 +3%、且次日非一字板作为历史可参与条件。该条件只用于历史标签与排序；实盘仍需观察开盘封单和盘口，日线数据不能模拟排队成交。</p>
+      <p><strong>随机选择基准：</strong>在每个预测日内随机挑选与 TopK 相同数量的候选，再按每日选择数量汇总；该基准与对应 TopK 命中率更可比。</p>
       <p><strong>Top1 / Top2 / Top3 命中率：</strong>每个交易日按模型评分选出的前 1、2、3 只股票中，实际晋级股票所占比例。</p>
       <p><strong>Top1 每日命中率：</strong>样本外交易日中，Top1 实际晋级的天数比例。</p>
       <p><strong>AUC：</strong>衡量整体排序区分度的指标，不能替代 TopK 实际命中率。</p>
-      <p class="muted">范围：沪深主板，排除 ST、创业板、科创板及北交所。V2 不会修改 V1 冻结模型；各级别样本量不同，尤其高板级别的结果可能存在较大波动。</p>
+      <p class="muted">范围：沪深主板，排除 ST、创业板、科创板及北交所。新模块与原有多级模型分开训练；模型分值尚未独立校准，不等于真实成功概率。回测收益为次日开盘价至第三交易日收盘价的毛收益，不含交易成本、滑点和无法成交风险。</p>
     </section>
 
     <footer><span>模型：multi-tier-v2</span><span>数据源：新浪财经公开日线 · 页面随 V2 工作流自动更新</span></footer>

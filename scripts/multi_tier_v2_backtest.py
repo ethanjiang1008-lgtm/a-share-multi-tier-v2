@@ -8,12 +8,21 @@ from sklearn.linear_model import LogisticRegression
 from zoneinfo import ZoneInfo
 
 from market_data_sina import fetch_all_stocks, fetch_kline, is_main_board
-from trading_calendar import is_trading_day
+from trading_calendar import is_trading_day, next_trading_day
+from first_to_third import (
+    build_samples as build_first_to_third_samples,
+    train_and_backtest as train_first_to_third,
+    save_samples as save_first_to_third_samples,
+    build_live_candidates as build_first_to_third_candidates,
+)
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT_JSON=ROOT/"reports"/"multi_tier_v2_backtest.json"
 OUT_CSV=ROOT/"reports"/"multi_tier_v2_samples.csv"
 MODEL_OUT=ROOT/"config"/"models_v2.json"
+FIRST_TO_THIRD_MODEL_OUT=ROOT/"config"/"first_to_third_model.json"
+FIRST_TO_THIRD_REPORT_OUT=ROOT/"reports"/"first_to_third_backtest.json"
+FIRST_TO_THIRD_SAMPLES_OUT=ROOT/"reports"/"first_to_third_samples.csv"
 
 LIMIT_UP=0.095
 MIN_HISTORY=60
@@ -709,6 +718,16 @@ def fit_one_level(samples,level):
     if model_history:
         metrics["selected_hyperparameters"]=model_history[-1]
     metrics.update(_daily_metrics(scored))
+    by_day=defaultdict(list)
+    for row in scored:
+        by_day[row["date"]].append(row)
+    random_baselines={}
+    for k in (1,2,3):
+        selected=sum(min(k,len(rows)) for rows in by_day.values())
+        expected=sum(min(k,len(rows))*(sum(int(r["y"]) for r in rows)/len(rows))
+                     for rows in by_day.values() if rows)
+        random_baselines[str(k)]=expected/selected if selected else None
+    metrics["oos_random_baseline"]=random_baselines
     metrics["oos_auc"]=_auc(scored)
     _add_oos_diagnostics(metrics,scored,initial_train)
 
@@ -926,6 +945,17 @@ def main(backtest_only=False):
     # Do not label a prior day's sample with today's still-forming intraday candle.
     dates=[d for d in all_dates if not (intraday_cutoff and d>=run_at.date())]
     market=market_states(stock_data,dates)
+    first_to_third_samples=build_first_to_third_samples(
+        stock_data,dates,market,make_features,board_level_for_day,pct
+    )
+    first_to_third_models,first_to_third_report=train_first_to_third(first_to_third_samples)
+    FIRST_TO_THIRD_MODEL_OUT.parent.mkdir(parents=True,exist_ok=True)
+    FIRST_TO_THIRD_MODEL_OUT.write_text(json.dumps(first_to_third_models,ensure_ascii=False,indent=2),encoding="utf-8")
+    FIRST_TO_THIRD_REPORT_OUT.parent.mkdir(parents=True,exist_ok=True)
+    FIRST_TO_THIRD_REPORT_OUT.write_text(json.dumps(first_to_third_report,ensure_ascii=False,indent=2),encoding="utf-8")
+    save_first_to_third_samples(FIRST_TO_THIRD_SAMPLES_OUT,first_to_third_samples)
+    print("First-board-to-third-board samples:",len(first_to_third_samples),
+          "| labels observed through:",first_to_third_report.get("labels_observed_through"))
 
     samples_by_level=defaultdict(list)
     sample_rows=[]
@@ -1010,6 +1040,11 @@ def main(backtest_only=False):
             prediction_stock_data,models,prediction_dates,prediction_market
         )
         if today_prediction:
+            today_prediction["first_to_third"]=build_first_to_third_candidates(
+                prediction_stock_data,prediction_dates,prediction_market,first_to_third_models,
+                make_features,board_level_for_day,today_prediction["analysis_date"],
+                today_prediction["prediction_date"],next_trading_day
+            )
             today_prediction["analysis_mode"]="盘中实时行情快照（成交量按交易时长估算）"
             today_prediction["run_at"]=run_at.isoformat(timespec="seconds")
             today_prediction["live_quote_count"]=len(prediction_stock_data)

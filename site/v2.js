@@ -38,10 +38,10 @@ function renderBacktest(report) {
     if (!m) continue;
     rows.push('<tr><td><strong>' + esc(TIER_LABELS[level]) + '</strong></td>' +
       '<td>' + fmtNum(m.sample_n) + '</td><td>' + fmtNum(m.train_n) + '</td><td>' + fmtNum(m.oos_n) + '</td>' +
-      '<td>' + fmtPct(m.oos_baseline) + '</td>' +
-      '<td><strong>' + metricPct(m,"top1") + '</strong><div class="muted">' + fmtNum(m.top1?.hits) + ' / ' + fmtNum(m.top1?.selected) + '</div></td>' +
-      '<td>' + metricPct(m,"top2") + '<div class="muted">' + fmtNum(m.top2?.hits) + ' / ' + fmtNum(m.top2?.selected) + '</div></td>' +
-      '<td>' + metricPct(m,"top3") + '<div class="muted">' + fmtNum(m.top3?.hits) + ' / ' + fmtNum(m.top3?.selected) + '</div></td>' +
+      '<td>' + fmtPct(m.oos_random_baseline?.["1"] ?? m.oos_baseline) + '</td>' +
+      '<td><strong>' + metricPct(m,"top1") + '</strong><div class="muted">随机基准 ' + fmtPct(m.oos_random_baseline?.["1"]) + '</div><div class="muted">' + fmtNum(m.top1?.hits) + ' / ' + fmtNum(m.top1?.selected) + '</div></td>' +
+      '<td>' + metricPct(m,"top2") + '<div class="muted">随机基准 ' + fmtPct(m.oos_random_baseline?.["2"]) + '</div><div class="muted">' + fmtNum(m.top2?.hits) + ' / ' + fmtNum(m.top2?.selected) + '</div></td>' +
+      '<td>' + metricPct(m,"top3") + '<div class="muted">随机基准 ' + fmtPct(m.oos_random_baseline?.["3"]) + '</div><div class="muted">' + fmtNum(m.top3?.hits) + ' / ' + fmtNum(m.top3?.selected) + '</div></td>' +
       '<td>' + fmtPct(m.top1?.day_hit_rate) + '<div class="muted">' + fmtNum(m.top1?.day_hit_days) + ' / ' + fmtNum(m.oos_days) + ' 天</div></td>' +
       '<td>' + fmtAuc(m.oos_auc) + '</td></tr>');
   }
@@ -80,20 +80,79 @@ function renderPredictions(prediction) {
     return '<article class="card"><div class="section-head" style="margin:0 0 12px"><div><div class="eyebrow">LEVEL ' + level + '</div><h3>' + esc(TIER_LABELS[level]) + '</h3></div><div class="hint">' + items.length + ' 个候选</div></div>' + body + '</article>';
   }).join("");
 }
+
+function renderFirstToThird(report, prediction) {
+  const f = prediction?.first_to_third || {};
+  const meta = [
+    ["首板分析日", f.analysis_date || prediction?.analysis_date || "—"],
+    ["计划观察入场日", f.entry_date || prediction?.prediction_date || "—"],
+    ["三板目标日", f.target_3plus_date || "—"],
+    ["当前首板候选数", f.candidate_n ?? "—"]
+  ];
+  document.getElementById("firstToThirdMeta").innerHTML = meta.map(([label,value]) =>
+    '<div class="market-item"><div class="name">' + esc(label) + '</div><div class="value">' + esc(value) + '</div></div>').join("");
+
+  const names = {
+    reach_3plus: "首板后连续晋级至三板及以上",
+    tradeable_3plus: "次日开盘可参与且最终晋级三板及以上"
+  };
+  const targets = report?.targets || {};
+  const rows = [];
+  for (const key of ["reach_3plus","tradeable_3plus"]) {
+    const m = targets[key];
+    if (!m) continue;
+    const fmtTop = (metric, baseline) =>
+      (metric?.precision == null ? "—" : fmtPct(metric.precision)) +
+      '<div class="muted">随机基准 ' + fmtPct(baseline) + '</div>' +
+      '<div class="muted">' + fmtNum(metric?.hits) + ' / ' + fmtNum(metric?.selected) + '</div>';
+    rows.push('<tr><td>' + esc(names[key]) + '</td>' +
+      '<td>' + fmtNum(m.sample_n) + '</td><td>' + fmtNum(m.oos_scored_n) + ' / ' + fmtNum(m.oos_n) + '</td>' +
+      '<td>' + fmtPct(m.oos_baseline) + '</td>' +
+      '<td>' + fmtTop(m.top1, m.random_topk_baseline?.["1"]) + '</td>' +
+      '<td>' + fmtTop(m.top2, m.random_topk_baseline?.["2"]) + '</td>' +
+      '<td>' + fmtTop(m.top3, m.random_topk_baseline?.["3"]) + '</td>' +
+      '<td>' + fmtPct(m.top1?.entry_eligible_rate) + '<div class="muted">' + fmtNum(m.top1?.entry_eligible_n) + ' / ' + fmtNum(m.top1?.selected) + '</div></td>' +
+      '<td>' + (m.top1?.mean_return_pct == null ? "—" : Number(m.top1.mean_return_pct).toFixed(2) + "%") +
+      '<div class="muted">仅统计开盘条件合格样本</div></td>' +
+      '<td>' + fmtAuc(m.oos_auc) + '<div class="muted">Brier ' + (m.oos_brier == null ? "—" : Number(m.oos_brier).toFixed(3)) + '</div></td></tr>');
+  }
+  document.getElementById("firstToThirdBacktestRows").innerHTML = rows.length ? rows.join("") :
+    '<tr><td colspan="10">尚无首板→三板样本外回测数据。</td></tr>';
+
+  const available = f.status === "ok";
+  const groups = [
+    ["优先观察：晋级潜力与次日可参与条件兼顾", f.rank_tradeable_3plus || [], "p_tradeable_3plus"],
+    ["单看晋级三板及以上潜力", f.rank_reach_3plus || [], "p_reach_3plus"]
+  ];
+  document.getElementById("firstToThirdCards").innerHTML = groups.map(([title,items,primary]) => {
+    const body = available && items.length ? items.map((r,i) =>
+      '<div class="v2-row"><div><strong>TOP ' + (i+1) + '</strong> ' + esc(r.name) + ' <span class="code">' + esc(r.code) + '</span>' +
+      '<div class="muted">首板日价格：' + (Number.isFinite(Number(r.price)) ? Number(r.price).toFixed(2) : "—") + '</div>' +
+      '<div class="muted">三板晋级估分：' + fmtPct(r.p_reach_3plus) + '</div>' +
+      '<div class="muted">可参与且晋级估分：' + fmtPct(r.p_tradeable_3plus) + '</div></div>' +
+      '<strong>' + fmtPct(r[primary]) + '</strong></div>').join("") :
+      '<div class="block-text muted">' + (available ? "本次没有识别到满足条件的首板候选。" : "新模块模型尚不可用；待历史训练工作流完成后重新运行当日预测。") + '</div>';
+    return '<article class="card"><div class="section-head" style="margin:0 0 12px"><div><div class="eyebrow">FIRST BOARD</div><h3>' + esc(title) + '</h3></div><div class="hint">' + (available ? items.length : 0) + ' 个候选</div></div>' + body + '</article>';
+  }).join("");
+}
+
 async function boot() {
   try {
-    const [reportRes,predictionRes] = await Promise.all([
+    const [reportRes,predictionRes,firstToThirdRes] = await Promise.all([
       fetch("./data/multi_tier_v2_backtest.json?t=" + Date.now(),{cache:"no-store"}),
-      fetch("./data/multi_tier_latest.json?t=" + Date.now(),{cache:"no-store"})
+      fetch("./data/multi_tier_latest.json?t=" + Date.now(),{cache:"no-store"}),
+      fetch("./data/first_to_third_backtest.json?t=" + Date.now(),{cache:"no-store"})
     ]);
     if (!reportRes.ok) throw new Error("V2 回测结果 HTTP " + reportRes.status);
     if (!predictionRes.ok) throw new Error("V2 最新预测 HTTP " + predictionRes.status);
-    const [report,prediction] = await Promise.all([reportRes.json(),predictionRes.json()]);
+    if (!firstToThirdRes.ok) throw new Error("首板→三板回测结果 HTTP " + firstToThirdRes.status);
+    const [report,prediction,firstToThirdReport] = await Promise.all([reportRes.json(),predictionRes.json(),firstToThirdRes.json()]);
     renderStatus(report,prediction);
     renderSummary(report,prediction);
     renderBacktest(report);
     renderMonthly(report);
     renderPredictions(prediction);
+    renderFirstToThird(firstToThirdReport,prediction);
   } catch (e) {
     document.getElementById("v2Status").innerHTML = '<div class="block-text muted">暂时无法读取 V2 最新结果：' + esc(e.message || e) + '</div>';
     document.getElementById("v2BacktestRows").innerHTML = '<tr><td colspan="10">请确认 V2 工作流已成功运行并完成网页部署。</td></tr>';

@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - "scripts/multi_tier_v2_backtest.py"
+      - "scripts/first_to_third.py"
       - "scripts/market_data_sina.py"
       - "scripts/trading_calendar.py"
       - "config/trading_calendar.json"
@@ -33,6 +34,7 @@ jobs:
         run: |
           python -m py_compile \
             scripts/multi_tier_v2_backtest.py \
+            scripts/first_to_third.py \
             scripts/multi_tier_scan.py \
             scripts/market_data_sina.py \
             scripts/trading_calendar.py
@@ -50,10 +52,15 @@ jobs:
           from pathlib import Path
           report = json.loads(Path("reports/multi_tier_v2_backtest.json").read_text(encoding="utf-8"))
           models = json.loads(Path("config/models_v2.json").read_text(encoding="utf-8"))
+          ftt_report = json.loads(Path("reports/first_to_third_backtest.json").read_text(encoding="utf-8"))
+          ftt_model = json.loads(Path("config/first_to_third_model.json").read_text(encoding="utf-8"))
           assert isinstance(report.get("levels"), dict) and report["levels"], "Missing tier metrics"
           assert isinstance(models, dict), "Invalid model JSON"
+          assert isinstance(ftt_report.get("targets"), dict), "Missing first-to-third report targets"
+          assert isinstance(ftt_model.get("models"), dict), "Missing first-to-third models"
           assert Path("reports/multi_tier_v2_samples.csv").exists(), "Missing sample CSV"
-          print("V2 training/backtest artifacts validated. No daily trading signal was generated.")
+          assert Path("reports/first_to_third_samples.csv").exists(), "Missing first-to-third sample CSV"
+          print("V2 tier models and separate first-to-third model artifacts validated. No daily trading signal was generated.")
           PY
 
       - name: Commit models and backtest reports only
@@ -62,7 +69,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           mkdir -p site/data
           cp reports/multi_tier_v2_backtest.json site/data/multi_tier_v2_backtest.json
-          git add -f config/models_v2.json reports/multi_tier_v2_backtest.json reports/multi_tier_v2_samples.csv site/data/multi_tier_v2_backtest.json
+          cp reports/first_to_third_backtest.json site/data/first_to_third_backtest.json
+          git add -f config/models_v2.json config/first_to_third_model.json reports/multi_tier_v2_backtest.json reports/multi_tier_v2_samples.csv reports/first_to_third_backtest.json reports/first_to_third_samples.csv site/data/multi_tier_v2_backtest.json site/data/first_to_third_backtest.json
           if ! git diff --cached --quiet; then
             git commit -m "data: refresh V2 model and OOS backtest"
             git pull --rebase origin main
