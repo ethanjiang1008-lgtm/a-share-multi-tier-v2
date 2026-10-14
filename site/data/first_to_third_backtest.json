@@ -1,18 +1,538 @@
 {
-  "status": "pending",
+  "status": "ok",
   "model_version": "first-board-to-third-v1",
   "data_source": "Sina daily K-line",
   "universe": "沪深主板；排除 ST、创业板、科创板、北交所",
   "signal_definition": "分析日为首板日 T",
   "entry_definition": {
     "day": "T+1 开盘价（历史回测代理，不代表一定成交）",
-    "min_open_gap_pct": -2,
-    "max_open_gap_pct": 3,
+    "min_open_gap_pct": -2.0,
+    "max_open_gap_pct": 3.0,
     "exclude_one_word_board": true
   },
   "target_definition": "观察 T+2 收盘时是否已连续晋级到三板及以上",
   "train_end": "2026-07-08",
   "oos_start": "2026-07-09",
-  "sample_n": 0,
-  "targets": {}
+  "sample_n": 9019,
+  "labels_observed_through": "2026-10-14",
+  "targets": {
+    "reach_3plus": {
+      "label": "首板后连续晋级至三板及以上",
+      "sample_n": 9019,
+      "train_n_before_oos": 5967,
+      "oos_n": 2996,
+      "oos_scored_n": 2996,
+      "oos_days": 62,
+      "overall_positive_n": 384,
+      "overall_positive_rate": 0.04257678234837565,
+      "oos_positive_n": 158,
+      "oos_baseline": 0.0527369826435247,
+      "top1": {
+        "selected": 62,
+        "hits": 10,
+        "precision": 0.16129032258064516,
+        "day_hit_days": 10,
+        "day_hit_rate": 0.16129032258064516,
+        "entry_eligible_n": 18,
+        "entry_eligible_rate": 0.2903225806451613,
+        "mean_return_pct": -2.292922222222222,
+        "median_return_pct": -2.05585,
+        "positive_return_rate": 0.3333333333333333
+      },
+      "top2": {
+        "selected": 124,
+        "hits": 21,
+        "precision": 0.1693548387096774,
+        "day_hit_days": 19,
+        "day_hit_rate": 0.3064516129032258,
+        "entry_eligible_n": 35,
+        "entry_eligible_rate": 0.28225806451612906,
+        "mean_return_pct": -1.0877171428571428,
+        "median_return_pct": -2.5,
+        "positive_return_rate": 0.34285714285714286
+      },
+      "top3": {
+        "selected": 186,
+        "hits": 27,
+        "precision": 0.14516129032258066,
+        "day_hit_days": 23,
+        "day_hit_rate": 0.3709677419354839,
+        "entry_eligible_n": 63,
+        "entry_eligible_rate": 0.3387096774193548,
+        "mean_return_pct": -1.1295460317460317,
+        "median_return_pct": -2.4,
+        "positive_return_rate": 0.38095238095238093
+      },
+      "random_topk_baseline": {
+        "1": 0.05482708793248942,
+        "2": 0.05482708793248942,
+        "3": 0.05482708793248944
+      },
+      "oos_auc": 0.5858734534036271,
+      "oos_brier": 0.04960257383981861,
+      "monthly": {
+        "2026-07": {
+          "selected": 895,
+          "oos_days": 17,
+          "positive_n": 33,
+          "positive_rate": 0.03687150837988827,
+          "top1": {
+            "selected": 17,
+            "hits": 6,
+            "precision": 0.35294117647058826,
+            "day_hit_days": 6,
+            "day_hit_rate": 0.35294117647058826,
+            "entry_eligible_n": 3,
+            "entry_eligible_rate": 0.17647058823529413,
+            "mean_return_pct": -4.789166666666667,
+            "median_return_pct": -6.4457,
+            "positive_return_rate": 0.0
+          },
+          "top2": {
+            "selected": 34,
+            "hits": 11,
+            "precision": 0.3235294117647059,
+            "day_hit_days": 9,
+            "day_hit_rate": 0.5294117647058824,
+            "entry_eligible_n": 7,
+            "entry_eligible_rate": 0.20588235294117646,
+            "mean_return_pct": -1.4112000000000002,
+            "median_return_pct": -6.4457,
+            "positive_return_rate": 0.2857142857142857
+          },
+          "top3": {
+            "selected": 51,
+            "hits": 12,
+            "precision": 0.23529411764705882,
+            "day_hit_days": 10,
+            "day_hit_rate": 0.5882352941176471,
+            "entry_eligible_n": 19,
+            "entry_eligible_rate": 0.37254901960784315,
+            "mean_return_pct": -1.8897947368421053,
+            "median_return_pct": -2.8019,
+            "positive_return_rate": 0.3157894736842105
+          },
+          "random_topk_baseline": {
+            "1": 0.03978281885555086,
+            "2": 0.03978281885555086,
+            "3": 0.03978281885555086
+          },
+          "oos_auc": 0.7060043591366097,
+          "oos_brier": 0.03331803745711877
+        },
+        "2026-08": {
+          "selected": 1126,
+          "oos_days": 21,
+          "positive_n": 66,
+          "positive_rate": 0.0586145648312611,
+          "top1": {
+            "selected": 21,
+            "hits": 2,
+            "precision": 0.09523809523809523,
+            "day_hit_days": 2,
+            "day_hit_rate": 0.09523809523809523,
+            "entry_eligible_n": 7,
+            "entry_eligible_rate": 0.3333333333333333,
+            "mean_return_pct": 1.5141000000000002,
+            "median_return_pct": -0.2503,
+            "positive_return_rate": 0.42857142857142855
+          },
+          "top2": {
+            "selected": 42,
+            "hits": 7,
+            "precision": 0.16666666666666666,
+            "day_hit_days": 7,
+            "day_hit_rate": 0.3333333333333333,
+            "entry_eligible_n": 13,
+            "entry_eligible_rate": 0.30952380952380953,
+            "mean_return_pct": 1.5977692307692308,
+            "median_return_pct": -1.1603,
+            "positive_return_rate": 0.38461538461538464
+          },
+          "top3": {
+            "selected": 63,
+            "hits": 10,
+            "precision": 0.15873015873015872,
+            "day_hit_days": 9,
+            "day_hit_rate": 0.42857142857142855,
+            "entry_eligible_n": 19,
+            "entry_eligible_rate": 0.30158730158730157,
+            "mean_return_pct": -0.1971842105263158,
+            "median_return_pct": -1.1603,
+            "positive_return_rate": 0.3684210526315789
+          },
+          "random_topk_baseline": {
+            "1": 0.05667841763475281,
+            "2": 0.05667841763475281,
+            "3": 0.056678417634752815
+          },
+          "oos_auc": 0.5626357918810748,
+          "oos_brier": 0.05534804526749864
+        },
+        "2026-09": {
+          "selected": 874,
+          "oos_days": 21,
+          "positive_n": 52,
+          "positive_rate": 0.059496567505720827,
+          "top1": {
+            "selected": 21,
+            "hits": 1,
+            "precision": 0.047619047619047616,
+            "day_hit_days": 1,
+            "day_hit_rate": 0.047619047619047616,
+            "entry_eligible_n": 8,
+            "entry_eligible_rate": 0.38095238095238093,
+            "mean_return_pct": -4.687975,
+            "median_return_pct": -3.3848000000000003,
+            "positive_return_rate": 0.375
+          },
+          "top2": {
+            "selected": 42,
+            "hits": 2,
+            "precision": 0.047619047619047616,
+            "day_hit_days": 2,
+            "day_hit_rate": 0.09523809523809523,
+            "entry_eligible_n": 13,
+            "entry_eligible_rate": 0.30952380952380953,
+            "mean_return_pct": -3.487623076923077,
+            "median_return_pct": -3.0883,
+            "positive_return_rate": 0.3076923076923077
+          },
+          "top3": {
+            "selected": 63,
+            "hits": 4,
+            "precision": 0.06349206349206349,
+            "day_hit_days": 3,
+            "day_hit_rate": 0.14285714285714285,
+            "entry_eligible_n": 21,
+            "entry_eligible_rate": 0.3333333333333333,
+            "mean_return_pct": -1.2616666666666667,
+            "median_return_pct": -2.9318,
+            "positive_return_rate": 0.42857142857142855
+          },
+          "random_topk_baseline": {
+            "1": 0.0644087494768647,
+            "2": 0.0644087494768647,
+            "3": 0.06440874947686472
+          },
+          "oos_auc": 0.528729178364215,
+          "oos_brier": 0.05691888619057792
+        },
+        "2026-10": {
+          "selected": 101,
+          "oos_days": 3,
+          "positive_n": 7,
+          "positive_rate": 0.06930693069306931,
+          "top1": {
+            "selected": 3,
+            "hits": 1,
+            "precision": 0.3333333333333333,
+            "day_hit_days": 1,
+            "day_hit_rate": 0.3333333333333333,
+            "entry_eligible_n": 0,
+            "entry_eligible_rate": 0.0,
+            "mean_return_pct": null,
+            "median_return_pct": null,
+            "positive_return_rate": null
+          },
+          "top2": {
+            "selected": 6,
+            "hits": 1,
+            "precision": 0.16666666666666666,
+            "day_hit_days": 1,
+            "day_hit_rate": 0.3333333333333333,
+            "entry_eligible_n": 2,
+            "entry_eligible_rate": 0.3333333333333333,
+            "mean_return_pct": -1.8117999999999999,
+            "median_return_pct": -1.8117999999999999,
+            "positive_return_rate": 0.5
+          },
+          "top3": {
+            "selected": 9,
+            "hits": 1,
+            "precision": 0.1111111111111111,
+            "day_hit_days": 1,
+            "day_hit_rate": 0.3333333333333333,
+            "entry_eligible_n": 4,
+            "entry_eligible_rate": 0.4444444444444444,
+            "mean_return_pct": -1.25345,
+            "median_return_pct": -1.8117999999999999,
+            "positive_return_rate": 0.5
+          },
+          "random_topk_baseline": {
+            "1": 0.060047007308670595,
+            "2": 0.060047007308670595,
+            "3": 0.060047007308670595
+          },
+          "oos_auc": 0.4696048632218845,
+          "oos_brier": 0.06654120988323461
+        }
+      },
+      "model_status": "ready",
+      "final_model_train_n": 9019,
+      "final_model_positive_n": 384
+    },
+    "tradeable_3plus": {
+      "label": "次日开盘可参与且最终晋级三板及以上",
+      "sample_n": 9019,
+      "train_n_before_oos": 5967,
+      "oos_n": 2996,
+      "oos_scored_n": 2996,
+      "oos_days": 62,
+      "overall_positive_n": 99,
+      "overall_positive_rate": 0.010976826699190598,
+      "oos_positive_n": 40,
+      "oos_baseline": 0.01335113484646195,
+      "top1": {
+        "selected": 62,
+        "hits": 1,
+        "precision": 0.016129032258064516,
+        "day_hit_days": 1,
+        "day_hit_rate": 0.016129032258064516,
+        "entry_eligible_n": 32,
+        "entry_eligible_rate": 0.5161290322580645,
+        "mean_return_pct": 1.6594,
+        "median_return_pct": -0.6973,
+        "positive_return_rate": 0.40625
+      },
+      "top2": {
+        "selected": 124,
+        "hits": 4,
+        "precision": 0.03225806451612903,
+        "day_hit_days": 4,
+        "day_hit_rate": 0.06451612903225806,
+        "entry_eligible_n": 65,
+        "entry_eligible_rate": 0.5241935483870968,
+        "mean_return_pct": 0.9560507692307693,
+        "median_return_pct": -1.1603,
+        "positive_return_rate": 0.38461538461538464
+      },
+      "top3": {
+        "selected": 186,
+        "hits": 4,
+        "precision": 0.021505376344086023,
+        "day_hit_days": 4,
+        "day_hit_rate": 0.06451612903225806,
+        "entry_eligible_n": 105,
+        "entry_eligible_rate": 0.5645161290322581,
+        "mean_return_pct": -0.6701171428571427,
+        "median_return_pct": -2.0408,
+        "positive_return_rate": 0.3523809523809524
+      },
+      "random_topk_baseline": {
+        "1": 0.0143302535392348,
+        "2": 0.0143302535392348,
+        "3": 0.014330253539234804
+      },
+      "oos_auc": 0.49870602165087957,
+      "oos_brier": 0.013214822509215933,
+      "monthly": {
+        "2026-07": {
+          "selected": 895,
+          "oos_days": 17,
+          "positive_n": 12,
+          "positive_rate": 0.013407821229050279,
+          "top1": {
+            "selected": 17,
+            "hits": 0,
+            "precision": 0.0,
+            "day_hit_days": 0,
+            "day_hit_rate": 0.0,
+            "entry_eligible_n": 10,
+            "entry_eligible_rate": 0.5882352941176471,
+            "mean_return_pct": 3.9164000000000003,
+            "median_return_pct": 2.4873000000000003,
+            "positive_return_rate": 0.6
+          },
+          "top2": {
+            "selected": 34,
+            "hits": 1,
+            "precision": 0.029411764705882353,
+            "day_hit_days": 1,
+            "day_hit_rate": 0.058823529411764705,
+            "entry_eligible_n": 19,
+            "entry_eligible_rate": 0.5588235294117647,
+            "mean_return_pct": 2.8129736842105264,
+            "median_return_pct": 1.0,
+            "positive_return_rate": 0.5263157894736842
+          },
+          "top3": {
+            "selected": 51,
+            "hits": 1,
+            "precision": 0.0196078431372549,
+            "day_hit_days": 1,
+            "day_hit_rate": 0.058823529411764705,
+            "entry_eligible_n": 32,
+            "entry_eligible_rate": 0.6274509803921569,
+            "mean_return_pct": 0.7785843749999999,
+            "median_return_pct": -0.09895000000000001,
+            "positive_return_rate": 0.5
+          },
+          "random_topk_baseline": {
+            "1": 0.015524443422542984,
+            "2": 0.015524443422542984,
+            "3": 0.01552444342254298
+          },
+          "oos_auc": 0.4970743676859192,
+          "oos_brier": 0.013294591660857695
+        },
+        "2026-08": {
+          "selected": 1126,
+          "oos_days": 21,
+          "positive_n": 15,
+          "positive_rate": 0.013321492007104795,
+          "top1": {
+            "selected": 21,
+            "hits": 0,
+            "precision": 0.0,
+            "day_hit_days": 0,
+            "day_hit_rate": 0.0,
+            "entry_eligible_n": 9,
+            "entry_eligible_rate": 0.42857142857142855,
+            "mean_return_pct": 3.3515333333333337,
+            "median_return_pct": -0.1279,
+            "positive_return_rate": 0.3333333333333333
+          },
+          "top2": {
+            "selected": 42,
+            "hits": 1,
+            "precision": 0.023809523809523808,
+            "day_hit_days": 1,
+            "day_hit_rate": 0.047619047619047616,
+            "entry_eligible_n": 19,
+            "entry_eligible_rate": 0.4523809523809524,
+            "mean_return_pct": 1.3326368421052635,
+            "median_return_pct": -1.1603,
+            "positive_return_rate": 0.3157894736842105
+          },
+          "top3": {
+            "selected": 63,
+            "hits": 1,
+            "precision": 0.015873015873015872,
+            "day_hit_days": 1,
+            "day_hit_rate": 0.047619047619047616,
+            "entry_eligible_n": 30,
+            "entry_eligible_rate": 0.47619047619047616,
+            "mean_return_pct": 0.2510266666666668,
+            "median_return_pct": -1.77265,
+            "positive_return_rate": 0.26666666666666666
+          },
+          "random_topk_baseline": {
+            "1": 0.012424781099975746,
+            "2": 0.012424781099975746,
+            "3": 0.012424781099975747
+          },
+          "oos_auc": 0.5155715571557156,
+          "oos_brier": 0.013173303555604289
+        },
+        "2026-09": {
+          "selected": 874,
+          "oos_days": 21,
+          "positive_n": 11,
+          "positive_rate": 0.012585812356979404,
+          "top1": {
+            "selected": 21,
+            "hits": 0,
+            "precision": 0.0,
+            "day_hit_days": 0,
+            "day_hit_rate": 0.0,
+            "entry_eligible_n": 12,
+            "entry_eligible_rate": 0.5714285714285714,
+            "mean_return_pct": -3.1471249999999995,
+            "median_return_pct": -3.39785,
+            "positive_return_rate": 0.25
+          },
+          "top2": {
+            "selected": 42,
+            "hits": 1,
+            "precision": 0.023809523809523808,
+            "day_hit_days": 1,
+            "day_hit_rate": 0.047619047619047616,
+            "entry_eligible_n": 24,
+            "entry_eligible_rate": 0.5714285714285714,
+            "mean_return_pct": -1.343170833333333,
+            "median_return_pct": -2.9604,
+            "positive_return_rate": 0.3333333333333333
+          },
+          "top3": {
+            "selected": 63,
+            "hits": 1,
+            "precision": 0.015873015873015872,
+            "day_hit_days": 1,
+            "day_hit_rate": 0.047619047619047616,
+            "entry_eligible_n": 38,
+            "entry_eligible_rate": 0.6031746031746031,
+            "mean_return_pct": -2.8424973684210526,
+            "median_return_pct": -3.25165,
+            "positive_return_rate": 0.2894736842105263
+          },
+          "random_topk_baseline": {
+            "1": 0.0134065700909571,
+            "2": 0.0134065700909571,
+            "3": 0.013406570090957103
+          },
+          "oos_auc": 0.4795112187927947,
+          "oos_brier": 0.012491926526566796
+        },
+        "2026-10": {
+          "selected": 101,
+          "oos_days": 3,
+          "positive_n": 2,
+          "positive_rate": 0.019801980198019802,
+          "top1": {
+            "selected": 3,
+            "hits": 1,
+            "precision": 0.3333333333333333,
+            "day_hit_days": 1,
+            "day_hit_rate": 0.3333333333333333,
+            "entry_eligible_n": 1,
+            "entry_eligible_rate": 0.3333333333333333,
+            "mean_return_pct": 21.5385,
+            "median_return_pct": 21.5385,
+            "positive_return_rate": 1.0
+          },
+          "top2": {
+            "selected": 6,
+            "hits": 1,
+            "precision": 0.16666666666666666,
+            "day_hit_days": 1,
+            "day_hit_rate": 0.3333333333333333,
+            "entry_eligible_n": 3,
+            "entry_eligible_rate": 0.5,
+            "mean_return_pct": 5.204266666666666,
+            "median_return_pct": -1.03,
+            "positive_return_rate": 0.3333333333333333
+          },
+          "top3": {
+            "selected": 9,
+            "hits": 1,
+            "precision": 0.1111111111111111,
+            "day_hit_days": 1,
+            "day_hit_rate": 0.3333333333333333,
+            "entry_eligible_n": 5,
+            "entry_eligible_rate": 0.5555555555555556,
+            "mean_return_pct": 1.04142,
+            "median_return_pct": -1.03,
+            "positive_return_rate": 0.4
+          },
+          "random_topk_baseline": {
+            "1": 0.02736726874657909,
+            "2": 0.02736726874657909,
+            "3": 0.02736726874657909
+          },
+          "oos_auc": 0.494949494949495,
+          "oos_brier": 0.019226387260529557
+        }
+      },
+      "model_status": "ready",
+      "final_model_train_n": 9019,
+      "final_model_positive_n": 99
+    }
+  },
+  "target_horizon": {
+    "signal_day": "T：首板日",
+    "entry_day": "T+1：次交易日开盘",
+    "evaluation_day": "T+2：第三个交易日（相对首板计第三板）",
+    "return_measure": "T+1开盘买入代理价至T+2收盘价的毛收益，不含交易成本与滑点"
+  }
 }
