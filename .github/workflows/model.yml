@@ -9,9 +9,11 @@ on:
       - "scripts/market_data_sina.py"
       - "scripts/trading_calendar.py"
       - "config/trading_calendar.json"
+      - ".github/workflows/model.yml"
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: v2-model-compute
@@ -78,3 +80,11 @@ jobs:
           else
             echo "V2 training outputs have no content changes."
           fi
+
+      - name: Trigger fresh live prediction after model publication
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run intraday-scan.yml --ref main
+          echo "Dispatched a fresh live scan against the newly published model files."
