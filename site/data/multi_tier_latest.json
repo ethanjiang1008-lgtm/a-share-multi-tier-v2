@@ -1,273 +1,322 @@
 {
   "status": "ok",
-  "analysis_date": "2026-10-23",
-  "prediction_date": "2026-10-26",
+  "analysis_date": "2026-10-26",
+  "prediction_date": "2026-10-27",
   "model_version": "multi-tier-v2",
   "universe": "沪深主板",
   "market": {
-    "first_count": 53,
-    "two_plus_count": 12,
-    "zt_count": 65,
-    "max_board": 6
+    "first_count": 33,
+    "two_plus_count": 14,
+    "zt_count": 47,
+    "max_board": 4
   },
   "levels": {
     "1": [
       {
         "rank": 1,
         "level": 1,
-        "code": "002982",
-        "name": "湘佳股份",
-        "price": 13.28,
-        "score": 0.2885045916816843,
-        "prediction_date": "2026-10-26",
-        "entry_status": "疑似一字板：通常难以买入，禁止把信号当作可成交订单",
-        "suspected_one_word": true,
-        "intraday_range_pct": 0.0
+        "code": "601900",
+        "name": "南方传媒",
+        "price": 14.28,
+        "score": 0.23230732541946938,
+        "prediction_date": "2026-10-27",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 3.698
       },
       {
         "rank": 2,
         "level": 1,
-        "code": "600303",
-        "name": "曙光股份",
-        "price": 3.14,
-        "score": 0.11388401392587089,
-        "prediction_date": "2026-10-26",
+        "code": "600558",
+        "name": "大西洋",
+        "price": 5.56,
+        "score": 0.19763656747095762,
+        "prediction_date": "2026-10-27",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 18.246
+        "intraday_range_pct": 11.287
       },
       {
         "rank": 3,
         "level": 1,
-        "code": "002343",
-        "name": "慈文传媒",
-        "price": 10.89,
-        "score": 0.1053602099222628,
-        "prediction_date": "2026-10-26",
+        "code": "603138",
+        "name": "海量数据",
+        "price": 17.0,
+        "score": 0.19676812112442768,
+        "prediction_date": "2026-10-27",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 10.101
+        "intraday_range_pct": 15.922
       },
       {
         "rank": 4,
         "level": 1,
-        "code": "001216",
-        "name": "华瓷股份",
-        "price": 28.12,
-        "score": 0.10496278015380484,
-        "prediction_date": "2026-10-26",
+        "code": "002696",
+        "name": "百洋股份",
+        "price": 11.28,
+        "score": 0.18771611279440772,
+        "prediction_date": "2026-10-27",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 18.584
+        "intraday_range_pct": 17.366
       },
       {
         "rank": 5,
         "level": 1,
-        "code": "603713",
-        "name": "密尔克卫",
-        "price": 66.66,
-        "score": 0.10430045888871753,
-        "prediction_date": "2026-10-26",
+        "code": "600826",
+        "name": "兰生股份",
+        "price": 8.22,
+        "score": 0.1827403486670957,
+        "prediction_date": "2026-10-27",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 9.917
+        "intraday_range_pct": 4.685
       },
       {
         "rank": 6,
         "level": 1,
-        "code": "002354",
-        "name": "天娱数科",
-        "price": 8.03,
-        "score": 0.10046072588421182,
-        "prediction_date": "2026-10-26",
+        "code": "002086",
+        "name": "东方海洋",
+        "price": 2.3,
+        "score": 0.18207301871565854,
+        "prediction_date": "2026-10-27",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 12.329
+        "intraday_range_pct": 12.44
       },
       {
         "rank": 7,
         "level": 1,
-        "code": "603466",
-        "name": "风语筑",
-        "price": 14.69,
-        "score": 0.09962015033171064,
-        "prediction_date": "2026-10-26",
+        "code": "002178",
+        "name": "延华智能",
+        "price": 5.34,
+        "score": 0.17494195452880276,
+        "prediction_date": "2026-10-27",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 15.73
+        "intraday_range_pct": 11.546
       },
       {
         "rank": 8,
         "level": 1,
-        "code": "605488",
-        "name": "福莱新材",
-        "price": 38.15,
-        "score": 0.09927701010959025,
-        "prediction_date": "2026-10-26",
+        "code": "002093",
+        "name": "国脉科技",
+        "price": 7.21,
+        "score": 0.1713361574203615,
+        "prediction_date": "2026-10-27",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 12.659
+        "intraday_range_pct": 11.298
       },
       {
         "rank": 9,
         "level": 1,
-        "code": "603721",
-        "name": "中广天择",
-        "price": 21.77,
-        "score": 0.09395874544581746,
-        "prediction_date": "2026-10-26",
+        "code": "000995",
+        "name": "皇台酒业",
+        "price": 13.37,
+        "score": 0.16473202355657082,
+        "prediction_date": "2026-10-27",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 20.01
+        "intraday_range_pct": 9.3
       },
       {
         "rank": 10,
         "level": 1,
-        "code": "002945",
-        "name": "华林证券",
-        "price": 15.36,
-        "score": 0.09071074900923136,
-        "prediction_date": "2026-10-26",
+        "code": "603657",
+        "name": "春光科技",
+        "price": 33.88,
+        "score": 0.16197922966410525,
+        "prediction_date": "2026-10-27",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 11.318
+        "intraday_range_pct": 10.584
       }
     ],
     "2": [
       {
         "rank": 1,
         "level": 2,
-        "code": "603028",
-        "name": "赛福天",
-        "price": 8.54,
-        "score": 0.6288226375667326,
-        "prediction_date": "2026-10-26",
-        "entry_status": "疑似一字板：通常难以买入，禁止把信号当作可成交订单",
-        "suspected_one_word": true,
-        "intraday_range_pct": 0.0
+        "code": "603337",
+        "name": "杰克科技",
+        "price": 43.19,
+        "score": 0.4379437166683813,
+        "prediction_date": "2026-10-27",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 2.649
       },
       {
         "rank": 2,
         "level": 2,
-        "code": "603933",
-        "name": "睿能科技",
-        "price": 20.94,
-        "score": 0.6141909667051577,
-        "prediction_date": "2026-10-26",
-        "entry_status": "疑似一字板：通常难以买入，禁止把信号当作可成交订单",
-        "suspected_one_word": true,
-        "intraday_range_pct": 0.0
+        "code": "603901",
+        "name": "永创智能",
+        "price": 10.63,
+        "score": 0.2783594063906417,
+        "prediction_date": "2026-10-27",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 7.66
       },
       {
         "rank": 3,
         "level": 2,
-        "code": "002535",
-        "name": "林州重机",
-        "price": 3.03,
-        "score": 0.3219180740320473,
-        "prediction_date": "2026-10-26",
+        "code": "000810",
+        "name": "创维数字",
+        "price": 11.02,
+        "score": 0.25838668370828083,
+        "prediction_date": "2026-10-27",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 1.091
+        "intraday_range_pct": 9.182
       },
       {
         "rank": 4,
         "level": 2,
-        "code": "603280",
-        "name": "南方路机",
-        "price": 31.97,
-        "score": 0.2669460670539887,
-        "prediction_date": "2026-10-26",
+        "code": "000559",
+        "name": "万向钱潮",
+        "price": 12.71,
+        "score": 0.23556858268230077,
+        "prediction_date": "2026-10-27",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 0.516
+        "intraday_range_pct": 7.013
       },
       {
         "rank": 5,
         "level": 2,
-        "code": "603089",
-        "name": "正裕工业",
-        "price": 11.89,
-        "score": 0.22496869191250427,
-        "prediction_date": "2026-10-26",
+        "code": "600094",
+        "name": "大名城",
+        "price": 4.83,
+        "score": 0.23290508509054464,
+        "prediction_date": "2026-10-27",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 9.158
+        "intraday_range_pct": 8.2
       },
       {
         "rank": 6,
         "level": 2,
-        "code": "000678",
-        "name": "襄阳轴承",
-        "price": 13.23,
-        "score": 0.15805204439526713,
-        "prediction_date": "2026-10-26",
+        "code": "002931",
+        "name": "锋龙股份",
+        "price": 42.37,
+        "score": 0.22998941218105104,
+        "prediction_date": "2026-10-27",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 16.459
+        "intraday_range_pct": 9.787
       },
       {
         "rank": 7,
         "level": 2,
-        "code": "603528",
-        "name": "多伦科技",
-        "price": 8.14,
-        "score": 0.15090698076264558,
-        "prediction_date": "2026-10-26",
+        "code": "000700",
+        "name": "模塑科技",
+        "price": 13.07,
+        "score": 0.2119475040037384,
+        "prediction_date": "2026-10-27",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 16.081
+        "intraday_range_pct": 11.869
       },
       {
         "rank": 8,
         "level": 2,
-        "code": "603728",
-        "name": "鸣志电器",
-        "price": 59.9,
-        "score": 0.1340333903929061,
-        "prediction_date": "2026-10-26",
+        "code": "605488",
+        "name": "福莱新材",
+        "price": 41.97,
+        "score": 0.2046850784612381,
+        "prediction_date": "2026-10-27",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 14.907
-      },
-      {
-        "rank": 9,
-        "level": 2,
-        "code": "003021",
-        "name": "兆威机电",
-        "price": 91.73,
-        "score": 0.11694778390486216,
-        "prediction_date": "2026-10-26",
-        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
-        "suspected_one_word": false,
-        "intraday_range_pct": 8.071
+        "intraday_range_pct": 4.928
       }
     ],
     "3": [
       {
         "rank": 1,
         "level": 3,
-        "code": "600838",
-        "name": "上海九百",
-        "price": 11.0,
-        "score": 0.9009434098039579,
-        "prediction_date": "2026-10-26",
+        "code": "603528",
+        "name": "多伦科技",
+        "price": 8.95,
+        "score": 0.7496076141046598,
+        "prediction_date": "2026-10-27",
         "entry_status": "疑似一字板：通常难以买入，禁止把信号当作可成交订单",
         "suspected_one_word": true,
         "intraday_range_pct": 0.0
+      },
+      {
+        "rank": 2,
+        "level": 3,
+        "code": "603028",
+        "name": "赛福天",
+        "price": 9.39,
+        "score": 0.6913564413922756,
+        "prediction_date": "2026-10-27",
+        "entry_status": "疑似一字板：通常难以买入，禁止把信号当作可成交订单",
+        "suspected_one_word": true,
+        "intraday_range_pct": 0.0
+      },
+      {
+        "rank": 3,
+        "level": 3,
+        "code": "603089",
+        "name": "正裕工业",
+        "price": 13.08,
+        "score": 0.3910269493469347,
+        "prediction_date": "2026-10-27",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 1.514
+      },
+      {
+        "rank": 4,
+        "level": 3,
+        "code": "002535",
+        "name": "林州重机",
+        "price": 3.33,
+        "score": 0.3016728235458178,
+        "prediction_date": "2026-10-27",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 15.842
+      },
+      {
+        "rank": 5,
+        "level": 3,
+        "code": "000678",
+        "name": "襄阳轴承",
+        "price": 14.55,
+        "score": 0.2979516957762458,
+        "prediction_date": "2026-10-27",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 4.837
       }
     ],
-    "4": [],
+    "4": [
+      {
+        "rank": 1,
+        "level": 4,
+        "code": "600838",
+        "name": "上海九百",
+        "price": 12.1,
+        "score": 0.604012843794702,
+        "prediction_date": "2026-10-27",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 3.818
+      }
+    ],
     "5": [],
     "6": []
   },
   "first_to_third": {
     "status": "ok",
     "model_version": "first-board-to-third-v1",
-    "analysis_date": "2026-10-23",
-    "entry_date": "2026-10-26",
-    "target_3plus_date": "2026-10-27",
-    "candidate_n": 53,
+    "analysis_date": "2026-10-26",
+    "entry_date": "2026-10-27",
+    "target_3plus_date": "2026-10-28",
+    "candidate_n": 33,
     "entry_gap_rule": {
       "min_pct": -2.0,
       "max_pct": 3.0,
@@ -275,193 +324,193 @@
     },
     "rank_reach_3plus": [
       {
-        "code": "002982",
-        "name": "湘佳股份",
-        "price": 13.28,
-        "p_reach_3plus": 0.08426105471887473,
-        "p_tradeable_3plus": 0.0012331404235813518,
+        "code": "600826",
+        "name": "兰生股份",
+        "price": 8.22,
+        "p_reach_3plus": 0.08646100029754006,
+        "p_tradeable_3plus": 0.01978077773580075,
         "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
         "rank": 1
       },
       {
-        "code": "002343",
-        "name": "慈文传媒",
-        "price": 10.89,
-        "p_reach_3plus": 0.023471890368527662,
-        "p_tradeable_3plus": 0.005296308679987336,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 1
-      },
-      {
-        "code": "603171",
-        "name": "税友股份",
-        "price": 48.29,
-        "p_reach_3plus": 0.02019221751338524,
-        "p_tradeable_3plus": 0.0024870138074088847,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 3
-      },
-      {
-        "code": "603713",
-        "name": "密尔克卫",
-        "price": 66.66,
-        "p_reach_3plus": 0.019420927101040677,
-        "p_tradeable_3plus": 0.0021307039537621746,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 4
-      },
-      {
-        "code": "603341",
-        "name": "龙旗科技",
-        "price": 44.14,
-        "p_reach_3plus": 0.01731823746695526,
-        "p_tradeable_3plus": 0.003373698442440934,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 4
-      },
-      {
-        "code": "002354",
-        "name": "天娱数科",
-        "price": 8.03,
-        "p_reach_3plus": 0.01695360695109461,
-        "p_tradeable_3plus": 0.0018060891864190743,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 6
-      },
-      {
-        "code": "002474",
-        "name": "榕基软件",
-        "price": 7.11,
-        "p_reach_3plus": 0.016725902146392687,
-        "p_tradeable_3plus": 0.002210581846111196,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 7
-      },
-      {
-        "code": "002241",
-        "name": "歌尔股份",
-        "price": 23.11,
-        "p_reach_3plus": 0.0153940464246036,
-        "p_tradeable_3plus": 0.001842815639602989,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 8
-      },
-      {
-        "code": "605488",
-        "name": "福莱新材",
-        "price": 38.15,
-        "p_reach_3plus": 0.015149355223099242,
-        "p_tradeable_3plus": 0.002138525831345496,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 9
-      },
-      {
-        "code": "001328",
-        "name": "登康口腔",
-        "price": 32.51,
-        "p_reach_3plus": 0.01494416213784331,
-        "p_tradeable_3plus": 0.0027299239423708706,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 8
-      }
-    ],
-    "rank_tradeable_3plus": [
-      {
-        "code": "002343",
-        "name": "慈文传媒",
-        "price": 10.89,
-        "p_reach_3plus": 0.023471890368527662,
-        "p_tradeable_3plus": 0.005296308679987336,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 1
-      },
-      {
-        "code": "603859",
-        "name": "能科科技",
-        "price": 43.56,
-        "p_reach_3plus": 0.014014810318058074,
-        "p_tradeable_3plus": 0.0038428252228698547,
+        "code": "600558",
+        "name": "大西洋",
+        "price": 5.56,
+        "p_reach_3plus": 0.07075242214718054,
+        "p_tradeable_3plus": 0.01631466994952914,
         "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
         "rank": 2
       },
       {
-        "code": "603337",
-        "name": "杰克科技",
-        "price": 39.26,
-        "p_reach_3plus": 0.012421792088603625,
-        "p_tradeable_3plus": 0.003456216740369695,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 3
-      },
-      {
-        "code": "603341",
-        "name": "龙旗科技",
-        "price": 44.14,
-        "p_reach_3plus": 0.01731823746695526,
-        "p_tradeable_3plus": 0.003373698442440934,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 4
-      },
-      {
-        "code": "002979",
-        "name": "雷赛智能",
-        "price": 54.15,
-        "p_reach_3plus": 0.010072957083194578,
-        "p_tradeable_3plus": 0.00335838028615517,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 5
-      },
-      {
-        "code": "603838",
-        "name": "四通股份",
-        "price": 14.72,
-        "p_reach_3plus": 0.008174565421161805,
-        "p_tradeable_3plus": 0.002801055753319566,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 6
-      },
-      {
-        "code": "603466",
-        "name": "风语筑",
-        "price": 14.69,
-        "p_reach_3plus": 0.014279764855600363,
-        "p_tradeable_3plus": 0.002761258474699994,
+        "code": "600980",
+        "name": "北矿科技",
+        "price": 18.95,
+        "p_reach_3plus": 0.060785186531166185,
+        "p_tradeable_3plus": 0.021628406256814333,
         "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
         "rank": 7
       },
       {
-        "code": "001328",
-        "name": "登康口腔",
-        "price": 32.51,
-        "p_reach_3plus": 0.01494416213784331,
-        "p_tradeable_3plus": 0.0027299239423708706,
+        "code": "000995",
+        "name": "皇台酒业",
+        "price": 13.37,
+        "p_reach_3plus": 0.059066777301048874,
+        "p_tradeable_3plus": 0.02769817076328491,
         "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 8
+        "rank": 2
       },
       {
-        "code": "001359",
-        "name": "平安电工",
-        "price": 74.91,
-        "p_reach_3plus": 0.009392640539199033,
-        "p_tradeable_3plus": 0.002626218596518403,
+        "code": "002820",
+        "name": "桂发祥",
+        "price": 10.19,
+        "p_reach_3plus": 0.05755838817859083,
+        "p_tradeable_3plus": 0.020322659932647417,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 10
+      },
+      {
+        "code": "002086",
+        "name": "东方海洋",
+        "price": 2.3,
+        "p_reach_3plus": 0.05340655486623064,
+        "p_tradeable_3plus": 0.020343072652243107,
         "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
         "rank": 9
       },
       {
-        "code": "002421",
-        "name": "达实智能",
-        "price": 3.43,
-        "p_reach_3plus": 0.012378624519158625,
-        "p_tradeable_3plus": 0.002605933797751732,
+        "code": "001318",
+        "name": "阳光乳业",
+        "price": 12.1,
+        "p_reach_3plus": 0.05291302972746696,
+        "p_tradeable_3plus": 0.031148158842513134,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 1
+      },
+      {
+        "code": "000411",
+        "name": "英特集团",
+        "price": 10.52,
+        "p_reach_3plus": 0.05038326649115493,
+        "p_tradeable_3plus": 0.02551062185199732,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 3
+      },
+      {
+        "code": "603138",
+        "name": "海量数据",
+        "price": 17.0,
+        "p_reach_3plus": 0.048440111465283944,
+        "p_tradeable_3plus": 0.01515821611215112,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 9
+      },
+      {
+        "code": "002093",
+        "name": "国脉科技",
+        "price": 7.21,
+        "p_reach_3plus": 0.04349034267994171,
+        "p_tradeable_3plus": 0.011568908019915572,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 10
+      }
+    ],
+    "rank_tradeable_3plus": [
+      {
+        "code": "001318",
+        "name": "阳光乳业",
+        "price": 12.1,
+        "p_reach_3plus": 0.05291302972746696,
+        "p_tradeable_3plus": 0.031148158842513134,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 1
+      },
+      {
+        "code": "000995",
+        "name": "皇台酒业",
+        "price": 13.37,
+        "p_reach_3plus": 0.059066777301048874,
+        "p_tradeable_3plus": 0.02769817076328491,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 2
+      },
+      {
+        "code": "000411",
+        "name": "英特集团",
+        "price": 10.52,
+        "p_reach_3plus": 0.05038326649115493,
+        "p_tradeable_3plus": 0.02551062185199732,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 3
+      },
+      {
+        "code": "603331",
+        "name": "百达精工",
+        "price": 12.91,
+        "p_reach_3plus": 0.03190554806577763,
+        "p_tradeable_3plus": 0.02445813585670062,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 4
+      },
+      {
+        "code": "001225",
+        "name": "和泰机电",
+        "price": 31.08,
+        "p_reach_3plus": 0.025921723851894955,
+        "p_tradeable_3plus": 0.022704701812300762,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 5
+      },
+      {
+        "code": "603719",
+        "name": "良品铺子",
+        "price": 9.39,
+        "p_reach_3plus": 0.03324136937167051,
+        "p_tradeable_3plus": 0.02191748567501446,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 6
+      },
+      {
+        "code": "600980",
+        "name": "北矿科技",
+        "price": 18.95,
+        "p_reach_3plus": 0.060785186531166185,
+        "p_tradeable_3plus": 0.021628406256814333,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 7
+      },
+      {
+        "code": "603258",
+        "name": "电魂网络",
+        "price": 15.3,
+        "p_reach_3plus": 0.034977646495239066,
+        "p_tradeable_3plus": 0.021027728333238575,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 8
+      },
+      {
+        "code": "002086",
+        "name": "东方海洋",
+        "price": 2.3,
+        "p_reach_3plus": 0.05340655486623064,
+        "p_tradeable_3plus": 0.020343072652243107,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 9
+      },
+      {
+        "code": "002820",
+        "name": "桂发祥",
+        "price": 10.19,
+        "p_reach_3plus": 0.05755838817859083,
+        "p_tradeable_3plus": 0.020322659932647417,
         "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
         "rank": 10
       }
     ]
   },
   "analysis_mode": "盘后：当日已完成日K",
-  "run_at": "2026-10-23T19:16:56+08:00",
-  "quote_snapshot_at": "2026-10-23T19:16:56+08:00",
+  "run_at": "2026-10-26T20:33:30+08:00",
+  "quote_snapshot_at": "2026-10-26T20:33:30+08:00",
   "live_quote_count": null,
-  "source_latest_kline_date": "2026-10-23",
+  "source_latest_kline_date": "2026-10-26",
   "failed": 8
 }
