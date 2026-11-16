@@ -1,13 +1,13 @@
 {
   "status": "ok",
-  "analysis_date": "2026-11-13",
-  "prediction_date": "2026-11-16",
+  "analysis_date": "2026-11-16",
+  "prediction_date": "2026-11-17",
   "model_version": "multi-tier-v2",
   "universe": "沪深主板",
   "market": {
-    "first_count": 28,
-    "two_plus_count": 7,
-    "zt_count": 35,
+    "first_count": 19,
+    "two_plus_count": 11,
+    "zt_count": 30,
     "max_board": 4
   },
   "levels": {
@@ -15,133 +15,133 @@
       {
         "rank": 1,
         "level": 1,
-        "code": "600715",
-        "name": "文投控股",
-        "price": 3.4,
-        "score": 0.28688975243877923,
-        "prediction_date": "2026-11-16",
+        "code": "601188",
+        "name": "龙江交通",
+        "price": 4.73,
+        "score": 0.19389067484364939,
+        "prediction_date": "2026-11-17",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 6.472
+        "intraday_range_pct": 12.093
       },
       {
         "rank": 2,
         "level": 1,
-        "code": "002685",
-        "name": "华东重机",
-        "price": 5.54,
-        "score": 0.23393848330546793,
-        "prediction_date": "2026-11-16",
+        "code": "601929",
+        "name": "吉视传媒",
+        "price": 2.96,
+        "score": 0.17974641837740357,
+        "prediction_date": "2026-11-17",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 4.365
+        "intraday_range_pct": 13.383
       },
       {
         "rank": 3,
         "level": 1,
-        "code": "002425",
-        "name": "凯撒文化",
-        "price": 3.96,
-        "score": 0.23311929350937435,
-        "prediction_date": "2026-11-16",
+        "code": "002058",
+        "name": "紫竹高科",
+        "price": 22.4,
+        "score": 0.15508118223160827,
+        "prediction_date": "2026-11-17",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 9.167
+        "intraday_range_pct": 12.426
       },
       {
         "rank": 4,
         "level": 1,
-        "code": "600410",
-        "name": "华胜天成",
-        "price": 14.3,
-        "score": 0.18170946863145154,
-        "prediction_date": "2026-11-16",
+        "code": "600936",
+        "name": "北投科技",
+        "price": 4.02,
+        "score": 0.15400421636458925,
+        "prediction_date": "2026-11-17",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 10.923
+        "intraday_range_pct": 10.685
       },
       {
         "rank": 5,
         "level": 1,
-        "code": "605318",
-        "name": "法狮龙",
-        "price": 84.26,
-        "score": 0.1776522751036051,
-        "prediction_date": "2026-11-16",
+        "code": "002861",
+        "name": "瀛通通讯",
+        "price": 13.6,
+        "score": 0.149915403850291,
+        "prediction_date": "2026-11-17",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 9.648
+        "intraday_range_pct": 12.945
       },
       {
         "rank": 6,
         "level": 1,
-        "code": "603166",
-        "name": "福达股份",
-        "price": 11.84,
-        "score": 0.1746987235575216,
-        "prediction_date": "2026-11-16",
+        "code": "001318",
+        "name": "阳光乳业",
+        "price": 14.62,
+        "score": 0.14821023990072457,
+        "prediction_date": "2026-11-17",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 9.665
+        "intraday_range_pct": 9.782
       },
       {
         "rank": 7,
         "level": 1,
-        "code": "603286",
-        "name": "日盈电子",
-        "price": 64.91,
-        "score": 0.17349984466199625,
-        "prediction_date": "2026-11-16",
+        "code": "600386",
+        "name": "北巴传媒",
+        "price": 3.81,
+        "score": 0.13548494626714064,
+        "prediction_date": "2026-11-17",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 11.693
+        "intraday_range_pct": 12.139
       },
       {
         "rank": 8,
         "level": 1,
-        "code": "002520",
-        "name": "日发精机",
-        "price": 7.7,
-        "score": 0.17278050331403866,
-        "prediction_date": "2026-11-16",
+        "code": "000156",
+        "name": "华数传媒",
+        "price": 8.54,
+        "score": 0.13361973806356914,
+        "prediction_date": "2026-11-17",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 11.714
+        "intraday_range_pct": 12.629
       },
       {
         "rank": 9,
         "level": 1,
-        "code": "000665",
-        "name": "湖北广电",
-        "price": 4.58,
-        "score": 0.17195507866370002,
-        "prediction_date": "2026-11-16",
+        "code": "605378",
+        "name": "野马电池",
+        "price": 15.52,
+        "score": 0.1333240552333638,
+        "prediction_date": "2026-11-17",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 10.577
+        "intraday_range_pct": 10.773
       },
       {
         "rank": 10,
         "level": 1,
-        "code": "002905",
-        "name": "金逸影视",
-        "price": 9.9,
-        "score": 0.16566164331823852,
-        "prediction_date": "2026-11-16",
+        "code": "603118",
+        "name": "共进股份",
+        "price": 14.71,
+        "score": 0.1320537662069894,
+        "prediction_date": "2026-11-17",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 9.667
+        "intraday_range_pct": 13.164
       }
     ],
     "2": [
       {
         "rank": 1,
         "level": 2,
-        "code": "001358",
-        "name": "兴欣新材",
-        "price": 26.64,
-        "score": 0.6767736878589888,
-        "prediction_date": "2026-11-16",
+        "code": "002905",
+        "name": "金逸影视",
+        "price": 10.89,
+        "score": 0.5318313443225609,
+        "prediction_date": "2026-11-17",
         "entry_status": "疑似一字板：通常难以买入，禁止把信号当作可成交订单",
         "suspected_one_word": true,
         "intraday_range_pct": 0.0
@@ -149,78 +149,126 @@
       {
         "rank": 2,
         "level": 2,
-        "code": "600467",
-        "name": "好当家",
-        "price": 2.73,
-        "score": 0.3920666005906604,
-        "prediction_date": "2026-11-16",
+        "code": "000819",
+        "name": "岳阳兴长",
+        "price": 14.1,
+        "score": 0.28873435995716173,
+        "prediction_date": "2026-11-17",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 4.435
+        "intraday_range_pct": 3.9
       },
       {
         "rank": 3,
         "level": 2,
-        "code": "002187",
-        "name": "广百股份",
-        "price": 6.97,
-        "score": 0.2938311737212916,
-        "prediction_date": "2026-11-16",
+        "code": "002685",
+        "name": "华东重机",
+        "price": 6.09,
+        "score": 0.25942090286792413,
+        "prediction_date": "2026-11-17",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 6.782
+        "intraday_range_pct": 8.845
       },
       {
         "rank": 4,
         "level": 2,
-        "code": "002205",
-        "name": "国统股份",
-        "price": 12.93,
-        "score": 0.22874512768114943,
-        "prediction_date": "2026-11-16",
+        "code": "000595",
+        "name": "新能股份",
+        "price": 6.08,
+        "score": 0.2286737439156226,
+        "prediction_date": "2026-11-17",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 9.872
+        "intraday_range_pct": 13.743
+      },
+      {
+        "rank": 5,
+        "level": 2,
+        "code": "002748",
+        "name": "世龙实业",
+        "price": 13.63,
+        "score": 0.21023339498720467,
+        "prediction_date": "2026-11-17",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 9.04
+      },
+      {
+        "rank": 6,
+        "level": 2,
+        "code": "002548",
+        "name": "金新农",
+        "price": 4.21,
+        "score": 0.19387970883873348,
+        "prediction_date": "2026-11-17",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 1.828
+      },
+      {
+        "rank": 7,
+        "level": 2,
+        "code": "002425",
+        "name": "凯撒文化",
+        "price": 4.36,
+        "score": 0.1334807300856599,
+        "prediction_date": "2026-11-17",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 7.071
+      },
+      {
+        "rank": 8,
+        "level": 2,
+        "code": "600715",
+        "name": "文投控股",
+        "price": 3.74,
+        "score": 0.10361669320501446,
+        "prediction_date": "2026-11-17",
+        "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
+        "suspected_one_word": false,
+        "intraday_range_pct": 7.059
       }
     ],
     "3": [
       {
         "rank": 1,
         "level": 3,
-        "code": "603396",
-        "name": "金辰股份",
-        "price": 35.32,
-        "score": 0.39122240782425327,
-        "prediction_date": "2026-11-16",
+        "code": "002205",
+        "name": "国统股份",
+        "price": 14.22,
+        "score": 0.43886213691194426,
+        "prediction_date": "2026-11-17",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 4.111
+        "intraday_range_pct": 14.849
       },
       {
         "rank": 2,
         "level": 3,
-        "code": "002148",
-        "name": "北纬科技",
-        "price": 7.95,
-        "score": 0.36356102954036795,
-        "prediction_date": "2026-11-16",
+        "code": "002187",
+        "name": "广百股份",
+        "price": 7.67,
+        "score": 0.39107470108520404,
+        "prediction_date": "2026-11-17",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 2.905
+        "intraday_range_pct": 3.156
       }
     ],
     "4": [
       {
         "rank": 1,
         "level": 4,
-        "code": "605255",
-        "name": "天普股份",
-        "price": 73.82,
-        "score": 0.4757411278186006,
-        "prediction_date": "2026-11-16",
+        "code": "002148",
+        "name": "北纬科技",
+        "price": 8.75,
+        "score": 0.06605471385430818,
+        "prediction_date": "2026-11-17",
         "entry_status": "已触及涨停：需确认是否开板、盘口和实际成交；不保证买入",
         "suspected_one_word": false,
-        "intraday_range_pct": 5.32
+        "intraday_range_pct": 10.063
       }
     ],
     "5": [],
@@ -229,10 +277,10 @@
   "first_to_third": {
     "status": "ok",
     "model_version": "first-board-to-third-v1",
-    "analysis_date": "2026-11-13",
-    "entry_date": "2026-11-16",
-    "target_3plus_date": "2026-11-17",
-    "candidate_n": 28,
+    "analysis_date": "2026-11-16",
+    "entry_date": "2026-11-17",
+    "target_3plus_date": "2026-11-18",
+    "candidate_n": 19,
     "entry_gap_rule": {
       "min_pct": -2.0,
       "max_pct": 3.0,
@@ -240,193 +288,193 @@
     },
     "rank_reach_3plus": [
       {
-        "code": "002819",
-        "name": "东方中科",
-        "price": 21.7,
-        "p_reach_3plus": 0.08736603737096069,
-        "p_tradeable_3plus": 0.01694184190800033,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 2
-      },
-      {
-        "code": "002685",
-        "name": "华东重机",
-        "price": 5.54,
-        "p_reach_3plus": 0.0728066580558112,
-        "p_tradeable_3plus": 0.004196676376277233,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 2
-      },
-      {
-        "code": "600715",
-        "name": "文投控股",
-        "price": 3.4,
-        "p_reach_3plus": 0.06933355832375636,
-        "p_tradeable_3plus": 0.00820963596197447,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 3
-      },
-      {
-        "code": "002905",
-        "name": "金逸影视",
-        "price": 9.9,
-        "p_reach_3plus": 0.06027136365957916,
-        "p_tradeable_3plus": 0.01279069152809085,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 6
-      },
-      {
-        "code": "603166",
-        "name": "福达股份",
-        "price": 11.84,
-        "p_reach_3plus": 0.05985014573389544,
-        "p_tradeable_3plus": 0.009519908911428858,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 5
-      },
-      {
-        "code": "603686",
-        "name": "福龙马",
-        "price": 13.6,
-        "p_reach_3plus": 0.05559723844398532,
-        "p_tradeable_3plus": 0.009810565472443722,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 10
-      },
-      {
-        "code": "605318",
-        "name": "法狮龙",
-        "price": 84.26,
-        "p_reach_3plus": 0.054503473045969704,
-        "p_tradeable_3plus": 0.007977676862550449,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 7
-      },
-      {
-        "code": "000665",
-        "name": "湖北广电",
-        "price": 4.58,
-        "p_reach_3plus": 0.05407053127178389,
-        "p_tradeable_3plus": 0.00870083112960392,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 8
-      },
-      {
-        "code": "600410",
-        "name": "华胜天成",
-        "price": 14.3,
-        "p_reach_3plus": 0.05280858727216095,
-        "p_tradeable_3plus": 0.008712760047769056,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 9
-      },
-      {
-        "code": "600977",
-        "name": "中国电影",
-        "price": 17.05,
-        "p_reach_3plus": 0.04984222443063778,
-        "p_tradeable_3plus": 0.011543605263306892,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 8
-      }
-    ],
-    "rank_tradeable_3plus": [
-      {
-        "code": "000595",
-        "name": "新能股份",
-        "price": 5.53,
-        "p_reach_3plus": 0.04327662019131592,
-        "p_tradeable_3plus": 0.02258814130115908,
+        "code": "002058",
+        "name": "紫竹高科",
+        "price": 22.4,
+        "p_reach_3plus": 0.0597344815247887,
+        "p_tradeable_3plus": 0.022779731511793293,
         "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
         "rank": 1
       },
       {
-        "code": "002819",
-        "name": "东方中科",
-        "price": 21.7,
-        "p_reach_3plus": 0.08736603737096069,
-        "p_tradeable_3plus": 0.01694184190800033,
+        "code": "600936",
+        "name": "北投科技",
+        "price": 4.02,
+        "p_reach_3plus": 0.058741390487693335,
+        "p_tradeable_3plus": 0.013796239620964188,
         "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
         "rank": 2
       },
       {
-        "code": "002124",
-        "name": "天邦食品",
-        "price": 2.31,
-        "p_reach_3plus": 0.03715639204744768,
-        "p_tradeable_3plus": 0.015832724874201738,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 3
-      },
-      {
-        "code": "001393",
-        "name": "维通利",
-        "price": 43.14,
-        "p_reach_3plus": 0.03565668308778367,
-        "p_tradeable_3plus": 0.013332886460099039,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 4
-      },
-      {
-        "code": "000819",
-        "name": "岳阳兴长",
-        "price": 12.82,
-        "p_reach_3plus": 0.046940586458565234,
-        "p_tradeable_3plus": 0.01315308921358274,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 5
-      },
-      {
-        "code": "002905",
-        "name": "金逸影视",
-        "price": 9.9,
-        "p_reach_3plus": 0.06027136365957916,
-        "p_tradeable_3plus": 0.01279069152809085,
-        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
-        "rank": 6
-      },
-      {
-        "code": "002042",
-        "name": "华孚时尚",
-        "price": 3.62,
-        "p_reach_3plus": 0.033976434173817266,
-        "p_tradeable_3plus": 0.011951979703241414,
+        "code": "600386",
+        "name": "北巴传媒",
+        "price": 3.81,
+        "p_reach_3plus": 0.04952752459320077,
+        "p_tradeable_3plus": 0.015721607991183533,
         "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
         "rank": 7
       },
       {
-        "code": "600977",
-        "name": "中国电影",
-        "price": 17.05,
-        "p_reach_3plus": 0.04984222443063778,
-        "p_tradeable_3plus": 0.011543605263306892,
+        "code": "002861",
+        "name": "瀛通通讯",
+        "price": 13.6,
+        "p_reach_3plus": 0.04843631829068129,
+        "p_tradeable_3plus": 0.013689467232903872,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 4
+      },
+      {
+        "code": "000628",
+        "name": "高新发展",
+        "price": 46.55,
+        "p_reach_3plus": 0.047382230049181615,
+        "p_tradeable_3plus": 0.011703002228203389,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 5
+      },
+      {
+        "code": "605378",
+        "name": "野马电池",
+        "price": 15.52,
+        "p_reach_3plus": 0.04371060533059437,
+        "p_tradeable_3plus": 0.014469244590933157,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 10
+      },
+      {
+        "code": "002419",
+        "name": "天虹股份",
+        "price": 5.4,
+        "p_reach_3plus": 0.043572186126910856,
+        "p_tradeable_3plus": 0.013007911468519042,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 7
+      },
+      {
+        "code": "601929",
+        "name": "吉视传媒",
+        "price": 2.96,
+        "p_reach_3plus": 0.042915674908489826,
+        "p_tradeable_3plus": 0.014825810625925567,
         "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
         "rank": 8
       },
       {
-        "code": "603767",
-        "name": "中马传动",
-        "price": 17.74,
-        "p_reach_3plus": 0.039415888192502836,
-        "p_tradeable_3plus": 0.009962082636115357,
+        "code": "000156",
+        "name": "华数传媒",
+        "price": 8.54,
+        "p_reach_3plus": 0.040366952045243584,
+        "p_tradeable_3plus": 0.01592043266623453,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 6
+      },
+      {
+        "code": "603118",
+        "name": "共进股份",
+        "price": 14.71,
+        "p_reach_3plus": 0.03975211388577726,
+        "p_tradeable_3plus": 0.009841455501439333,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 10
+      }
+    ],
+    "rank_tradeable_3plus": [
+      {
+        "code": "002058",
+        "name": "紫竹高科",
+        "price": 22.4,
+        "p_reach_3plus": 0.0597344815247887,
+        "p_tradeable_3plus": 0.022779731511793293,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 1
+      },
+      {
+        "code": "000521",
+        "name": "长虹美菱",
+        "price": 4.31,
+        "p_reach_3plus": 0.02922930310919332,
+        "p_tradeable_3plus": 0.020051601007532664,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 2
+      },
+      {
+        "code": "002035",
+        "name": "华帝股份",
+        "price": 4.68,
+        "p_reach_3plus": 0.03794981981759217,
+        "p_tradeable_3plus": 0.019632767732677598,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 3
+      },
+      {
+        "code": "601188",
+        "name": "龙江交通",
+        "price": 4.73,
+        "p_reach_3plus": 0.03941113807664843,
+        "p_tradeable_3plus": 0.01906509496372854,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 4
+      },
+      {
+        "code": "000533",
+        "name": "顺钠股份",
+        "price": 9.82,
+        "p_reach_3plus": 0.03635848039994286,
+        "p_tradeable_3plus": 0.01805094864750295,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 5
+      },
+      {
+        "code": "000156",
+        "name": "华数传媒",
+        "price": 8.54,
+        "p_reach_3plus": 0.040366952045243584,
+        "p_tradeable_3plus": 0.01592043266623453,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 6
+      },
+      {
+        "code": "600386",
+        "name": "北巴传媒",
+        "price": 3.81,
+        "p_reach_3plus": 0.04952752459320077,
+        "p_tradeable_3plus": 0.015721607991183533,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 7
+      },
+      {
+        "code": "601929",
+        "name": "吉视传媒",
+        "price": 2.96,
+        "p_reach_3plus": 0.042915674908489826,
+        "p_tradeable_3plus": 0.014825810625925567,
+        "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
+        "rank": 8
+      },
+      {
+        "code": "002959",
+        "name": "小熊电器",
+        "price": 36.27,
+        "p_reach_3plus": 0.034497407958896595,
+        "p_tradeable_3plus": 0.014510585798372957,
         "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
         "rank": 9
       },
       {
-        "code": "603686",
-        "name": "福龙马",
-        "price": 13.6,
-        "p_reach_3plus": 0.05559723844398532,
-        "p_tradeable_3plus": 0.009810565472443722,
+        "code": "605378",
+        "name": "野马电池",
+        "price": 15.52,
+        "p_reach_3plus": 0.04371060533059437,
+        "p_tradeable_3plus": 0.014469244590933157,
         "score_note": "逻辑回归估分；未经独立概率校准，不等同真实概率",
         "rank": 10
       }
     ]
   },
   "analysis_mode": "盘后：当日已完成日K",
-  "run_at": "2026-11-13T22:16:30+08:00",
-  "quote_snapshot_at": "2026-11-13T22:16:30+08:00",
+  "run_at": "2026-11-16T23:16:09+08:00",
+  "quote_snapshot_at": "2026-11-16T23:16:09+08:00",
   "live_quote_count": null,
-  "source_latest_kline_date": "2026-11-13",
+  "source_latest_kline_date": "2026-11-16",
   "failed": 7
 }
